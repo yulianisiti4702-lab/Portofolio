@@ -320,7 +320,7 @@
         </div>
         <div class="grid">${PROJECTS.map(p => `
           <a class="card reveal" data-cat="${p.cat}" href="project.html?id=${p.id}">
-            ${media(p.gallery[0] && p.gallery[0].src, p.gallery[0] ? p.gallery[0].label : p.title)}
+            ${media(p.thumb || (p.gallery[0] && p.gallery[0].src), p.gallery[0] ? p.gallery[0].label : p.title)}
             <div class="meta"><span>${catLabel(p.cat)}</span><span>${p.year || NOTE('tahun?')}</span></div>
             <h3>${p.title}<span class="arrow">↗</span></h3>
             <p>${p.short}</p>
@@ -356,8 +356,20 @@
     const prev = PROJECTS[(i - 1 + PROJECTS.length) % PROJECTS.length];
     const next = PROJECTS[(i + 1) % PROJECTS.length];
     document.title = `${p.title} | ${PROFILE.name}`;
-    const [cover, ...rest] = p.gallery;
+    const cover = p.cover || p.gallery[0];
+    const rest = p.cover ? [] : p.gallery.slice(1);
     const list = a => `<ol>${a.map(x => `<li>${x}</li>`).join('')}</ol>`;
+    const sectionsHTML = (p.sections || []).map((s, k) => `
+      <section class="sec light pd-section">
+        <div class="wrap">
+          <div class="pd-sec-head reveal">
+            <span class="num">0${k + 1}</span>
+            <div><h2>${s.title}</h2><p>${s.desc}</p></div>
+          </div>
+          <div class="pd-grid ${s.layout || 'grid-2'}">${s.images.map(([f, l]) =>
+            `<figure class="reveal-img">${media((p.imgBase || '') + f + '.jpg', l, 'zoomable')}<figcaption>${l}</figcaption></figure>`).join('')}</div>
+        </div>
+      </section>`).join('');
 
     app.innerHTML = `
     <section class="pd-hero">
@@ -391,6 +403,7 @@
       </div>
     </section>` : ''}
 
+    ${sectionsHTML}
     ${rest.length ? `
     <section class="sec light">
       <div class="wrap">
@@ -413,6 +426,16 @@
     if (en.isIntersecting) { en.target.classList.add('in'); ro.unobserve(en.target); }
   }), { threshold: .12, rootMargin: '0px 0px -40px 0px' });
   $$('.reveal, .reveal-img, .line-mask').forEach(el => ro.observe(el));
+
+  /* ---------- lightbox (klik foto untuk memperbesar) ---------- */
+  document.body.insertAdjacentHTML('beforeend', '<div class="lightbox" id="lightbox"><img alt=""><p></p><button aria-label="Close">✕</button></div>');
+  const lbx = $('#lightbox');
+  document.addEventListener('click', e => {
+    const img = e.target.closest('.zoomable img');
+    if (img) { lbx.querySelector('img').src = img.src; lbx.querySelector('p').textContent = img.alt; lbx.classList.add('open'); return; }
+    if (e.target.closest('#lightbox')) lbx.classList.remove('open');
+  });
+  document.addEventListener('keydown', e => e.key === 'Escape' && lbx.classList.remove('open'));
 
   /* ---------- page transition (curtain) ---------- */
   const curtain = $('#curtain');
