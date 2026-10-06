@@ -237,6 +237,8 @@
           <div class="reveal">
             ${EDUCATION.text.map(p => `<p>${p}</p>`).join('')}
             <span class="gpa">${EDUCATION.gpa}</span>
+            ${(EDUCATION.programs || []).map(g => `
+              <div class="edu-prog"><small>${g.date}</small><h4>${g.title}</h4><b>${g.org}</b><p>${g.desc}</p></div>`).join('')}
           </div>
         </div>
       </div>

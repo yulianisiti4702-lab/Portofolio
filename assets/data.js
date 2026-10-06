@@ -33,11 +33,10 @@ const PROFILE = {
 const SKILLS = [
   { name: "Graphic Design", desc: "Visuals that carry a brand's voice", items: ["Brand Identity", "Social Media Design", "Layout Design", "Typography", "Marketplace Banners", "Book Mockups"] },
   { name: "Illustration", desc: "From pencil realism to playful characters", items: ["Digital Illustration", "Editorial Illustration", "Character Design", "Drawing", "Painting", "Comic & Storyboard"] },
-  { name: "Visual Content", desc: "Content made to stop the scroll", items: ["YouTube Thumbnails", "Instagram Carousels", "Product Photography", "Basic Video Editing", "Content Planning"] },
-  { name: "UI/UX Design", desc: "User-centered digital products", items: ["UX Research", "User Flow", "Wireframing", "Prototyping", "Design Thinking"] }
+  { name: "Visual Content", desc: "Content made to stop the scroll", items: ["YouTube Thumbnails", "Instagram Carousels", "Product Photography", "Basic Video Editing", "Content Planning"] }
 ];
 
-const TOOLS = ["Adobe Illustrator", "Adobe Photoshop", "Adobe InDesign", "Affinity Designer", "Clip Studio Paint", "Figma", "Canva", "CapCut", "Blender", "Unity"];
+const TOOLS = ["Adobe Illustrator", "Adobe Photoshop", "Adobe InDesign", "Affinity Designer", "Clip Studio Paint", "Figma", "Canva", "CapCut"];
 
 const EXPERIENCE = [
   { company: "PT. Kulturama Virtua Solusindo", role: "Graphic Designer", type: "Full-time", start: "Apr 2026", end: "Present", location: "Bandung",
@@ -54,10 +53,7 @@ const EXPERIENCE = [
     tags: ["Instagram Feed", "Banner", "Book Mockup", "Activity Sheet"] },
   { company: "PT. Mizan Pustaka", role: "Illustrator Intern", type: "Internship", start: "Sep 2023", end: "Jan 2024", location: "Bandung",
     desc: "Created digital illustrations for book editorial needs with Adobe Illustrator and InDesign, including the realistic pencil cover illustration for Lelaki Sunni di Kota Syi'ah and interior illustrations for seven titles. Completed the internship with a 95.5/100 evaluation from the Art Director.",
-    tags: ["Editorial Illustration", "Pencil Drawing", "Catalog Design"] },
-  { company: "BISA AI (MSIB Independent Study)", role: "UI/UX Design Participant", type: "Independent Study", start: "Feb 2023", end: "Jun 2023", location: "Bandung",
-    desc: "Learned user-centered digital product design and designed a mobile app interface in Figma through UX research, user flows, wireframing, and prototyping, closing with a design-thinking capstone project.",
-    tags: ["Figma", "UX Research", "Prototyping"] }
+    tags: ["Editorial Illustration", "Pencil Drawing", "Catalog Design"] }
 ];
 
 const VOLUNTEER = [
@@ -78,20 +74,27 @@ const EDUCATION = {
     "I studied Visual Communication Design at Universitas Pendidikan Indonesia on a full Jabar Future Leaders Scholarship from the West Java Provincial Government.",
     "My thesis brought illustration, book design, and augmented reality together in an interactive book that introduces traditional Sundanese musical instruments to elementary school children, tested directly with sixth-grade students.",
     "Outside class, I designed for scholarship programs and community events, and served as General Secretary of HIKAVI, the DKV UPI student association."
+  ],
+  programs: [
+    { title: "Kampus Merdeka Independent Study (MSIB)", org: "BISA AI", date: "Feb 2023 – Jun 2023",
+      desc: "A government-backed program where I learned user-centered design and design thinking, closing with a capstone project built from user research to prototype." }
   ]
 };
 
 const ACHIEVEMENTS = [
   { year: "2024", items: [
-    { title: "Adobe Certified Professional", sub: "Graphic Design & Illustration Using Adobe Illustrator 2021 · Score 882/1000", date: "2024" },
+    { title: "Adobe Certified Professional", sub: "Graphic Design & Illustration Using Adobe Illustrator · Score 882/1000", date: "Apr 2024" },
+    { title: "BNSP Certificate of Competence", sub: "Medior Graphic Designer (Desain Grafis Madya) · LSP P1 Universitas Pendidikan Indonesia", date: "Apr 2024" },
+    { title: "Winner, MyEduSolve Design Challenge", sub: "“The Happiness of Giving” · MyEduSolve, YMKI & Hoshizora Foundation", date: "Feb 2024" },
+    { title: "PTESOL English Proficiency · 467/677", sub: "Language Center, Universitas Pendidikan Indonesia", date: "Jan 2024" },
     { title: "95.5/100 Internship Evaluation", sub: "Art Director, PT. Mizan Pustaka", date: "Jan 2024" } ] },
+  { year: "2023", items: [
+    { title: "Registered Copyright: Tongkat Ajaib", sub: "Children's storybook illustration · Kemenkumham RI", date: "Dec 2023" },
+    { title: "Basic Adobe Illustrator: Mastering Fundamental", sub: "Training completion · SekolahDesain", date: "Jan 2023" } ] },
   { year: "2022", items: [
     { title: "Most Favorite Reels Video", sub: "JFLS Goes to School 2022", date: "2022" } ] },
   { year: "2020", items: [
-    { title: "Jabar Future Leaders Scholarship", sub: "Full undergraduate scholarship, West Java Provincial Government", date: "2020" } ] },
-  { year: "Tahun?", items: [
-    { title: "BNSP Intermediate Graphic Designer", sub: "Desain Grafis Madya · Certified Competent " + NOTE("tahun?"), date: "" },
-    { title: "Registered Copyright: Tongkat Ajaib", sub: "Kemenkumham RI " + NOTE("tahun?"), date: "" } ] }
+    { title: "Jabar Future Leaders Scholarship", sub: "Full undergraduate scholarship, West Java Provincial Government", date: "2020" } ] }
 ];
 
 const CATEGORIES = [
@@ -306,7 +309,7 @@ const PROJECTS = [
          "Translate the story's emotional beats (joy, worry, exhaustion, and wonder) into visuals appropriate for young readers."],
    res: ["Completed a full pre-production package (synopsis, moral message, and 8-page breakdown), ensuring a clear narrative structure from the first page.",
          "Illustrated 8 complete pages with consistent character design across a range of emotions and settings.",
-         "Officially registered the work for copyright with Kemenkumham RI, securing legal ownership and protection as an original literary and artistic work."],
+         "Officially registered the work for copyright with Kemenkumham RI in December 2023, securing legal ownership and protection as an original literary and artistic work."],
    kv: "Character-driven illustrations with warm, expressive scenes that follow the story's emotional arc, from Tia's cheerful walk home, to the quiet tension of caring for her sick mother, to the magical arrival of the fairy godmother. Each spread balances a clear narrative focus with soft, child-friendly visual storytelling.",
    tags: ["Children's Book", "Character Design", "Storytelling"], tools: [],
    gallery: [{ label: "Cover buku", src: "" }, { label: "Mockup isi buku", src: "" }, { label: "Karakter", src: "" }] },
