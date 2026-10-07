@@ -27,7 +27,12 @@ const PROFILE = {
     "My work moves between two worlds. On one side is commercial design for brands: sneaker-culture social content and YouTube thumbnails, marketplace visuals and product photography, and promotional campaigns for children's books. On the other is illustration, from realistic pencil portraits for literary titles to playful characters for young readers.",
     "Today I design visual content for Shoe Police and Shoe Workshop at PT. Kulturama Virtua Solusindo. Whatever the project, I start from the story it needs to tell, then find the visual language that tells it clearly."
   ],
-  quote: "Every project starts with a story I want to tell visually."
+  quote: "Every project starts with a story I want to tell visually.",
+  // Animasi ketikan di halaman depan: "Turning stories into ..."
+  typing: ["brand visuals.", "scroll-stopping content.", "marketplace campaigns.", "book illustrations.", "product photography."],
+  // Ringkasan singkat di bagian "About me" halaman depan
+  snapshot: "I'm a graphic designer and illustrator from Bandung with a Bachelor of Design from Universitas Pendidikan Indonesia. I create brand visuals, social content, and marketplace imagery for brands, and hand-drawn illustrations for books. Whatever the brief, I start from the story it needs to tell.",
+  experienceSince: 2023   // tahun mulai kerja profesional di bidang desain (magang Mizan, Sep 2023)
 };
 
 const SKILLS = [
@@ -96,6 +101,29 @@ const ACHIEVEMENTS = [
   { year: "2020", items: [
     { title: "Jabar Future Leaders Scholarship", sub: "Full undergraduate scholarship, West Java Provincial Government", date: "2020" } ] }
 ];
+
+// Kartu sertifikat di "Portfolio Showcase" halaman depan.
+// img kosong = kartu teks saja (dipakai untuk dokumen yang memuat data pribadi).
+const CERTIFICATES = [
+  { title: "Adobe Certified Professional", issuer: "Adobe · Graphic Design & Illustration Using Adobe Illustrator", date: "Apr 2024", img: "assets/images/certificates/adobe.jpg" },
+  { title: "BNSP Certificate of Competence", issuer: "Medior Graphic Designer · LSP P1 Universitas Pendidikan Indonesia", date: "Apr 2024", img: "assets/images/certificates/bnsp.jpg" },
+  { title: "Winner, MyEduSolve Design Challenge", issuer: "MyEduSolve, YMKI & Hoshizora Foundation", date: "Feb 2024", img: "assets/images/certificates/myedusolve.jpg" },
+  { title: "Basic Adobe Illustrator: Mastering Fundamental", issuer: "SekolahDesain", date: "Jan 2023", img: "assets/images/certificates/sekolahdesain.jpg" },
+  { title: "Registered Copyright: Tongkat Ajaib", issuer: "Kemenkumham RI · Children's storybook illustration", date: "Dec 2023", img: "" },
+  { title: "PTESOL English Proficiency · 467", issuer: "Language Center, Universitas Pendidikan Indonesia", date: "Jan 2024", img: "" }
+];
+
+// Keterangan singkat tiap software untuk tab "Tools" di halaman depan
+const TOOL_INFO = {
+  "Adobe Illustrator": ["Ai", "Vector illustration, layouts & key visuals"],
+  "Adobe Photoshop": ["Ps", "Photo editing, compositing & thumbnails"],
+  "Adobe InDesign": ["Id", "Book layouts & product catalogs"],
+  "Affinity Designer": ["Af", "Vector & digital illustration"],
+  "Clip Studio Paint": ["Cs", "Comics & character illustration"],
+  "Figma": ["Fg", "Mockups & design presentation"],
+  "Canva": ["Cv", "Quick social content & templates"],
+  "CapCut": ["Cc", "Short-form video editing"]
+};
 
 const CATEGORIES = [
   { key: "brand", label: "Brand & Social Media" },

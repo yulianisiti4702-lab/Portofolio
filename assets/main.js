@@ -28,7 +28,10 @@
   document.body.insertAdjacentHTML('afterbegin', `
     <header class="top">
       <a href="index.html" class="logo">${PROFILE.nick}</a>
-      <button class="burger" id="openMenu" aria-label="Open menu">Menu <i></i></button>
+      <div class="top-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"><span class="sun"></span></button>
+        <button class="burger" id="openMenu" aria-label="Open menu">Menu <i></i></button>
+      </div>
     </header>
     <div class="menu" id="menu" aria-hidden="true">
       <button class="close" id="closeMenu">Close ✕</button>
@@ -41,6 +44,10 @@
         <div class="socials">${socials()}</div>
       </aside>
     </div>`);
+  const root = document.documentElement;
+  const isDark = () => root.dataset.theme === 'dark';
+  const setTheme = t => { root.dataset.theme = t; try { localStorage.setItem('yuli-theme', t); } catch (e) {} };
+  $('#themeToggle').onclick = () => setTheme(isDark() ? 'light' : 'dark');
   const menu = $('#menu');
   const toggleMenu = open => { menu.classList.toggle('open', open); menu.setAttribute('aria-hidden', !open); };
   $('#openMenu').onclick = () => toggleMenu(true);
@@ -63,6 +70,16 @@
   /* ================= HOME ================= */
   function renderHome() {
     document.title = `${PROFILE.name} | Portfolio`;
+    const years = new Date().getFullYear() - (PROFILE.experienceSince || 2023);
+    const certCount = ACHIEVEMENTS.reduce((n, y) => n + y.items.length, 0);
+    const showcaseProjects = [...PROJECTS].filter(p => p.thumb).sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+    const ic = {
+      arrow: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17 17 7M8 7h9v9"/></svg>',
+      grid: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>',
+      award: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="9" r="6"/><path d="m8.5 14-1.5 7 5-3 5 3-1.5-7"/></svg>',
+      pen: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.6 7.6"/><circle cx="11" cy="11" r="2"/></svg>'
+    };
+
     app.innerHTML = `
     <div class="snap" id="snap">
       <section class="panel light hero" id="home" data-i="0">
@@ -70,6 +87,7 @@
           <div class="reveal">
             <div class="name">${PROFILE.name}</div>
             <h1>${lines('Graphic Designer')}${lines('<span class="script">&amp; Illustrator</span>')}</h1>
+            <div class="typed" aria-label="Turning stories into ${PROFILE.typing.join(', ')}">Turning stories into <span id="typed"></span><i class="caret"></i></div>
             <p>${PROFILE.heroIntro}</p>
             <div class="actions">
               <a class="btn solid" href="${PROFILE.cv}" target="_blank" rel="noopener">Download CV</a>
@@ -83,35 +101,93 @@
         </div>
       </section>
 
-      <section class="panel dark teaser" id="about" data-i="1">
-        <div class="bg">${media(PROFILE.aboutPhotos[0], 'Foto latar About (opsional)', '', true)}</div>
-        <div class="content wrap reveal">
-          <div class="eyebrow">01 — About</div>
-          <h2>${lines('About <span class="script">me</span>')}</h2>
-          <p>A brief introduction to my journey as a graphic designer and illustrator.</p>
-          <a class="btn on-dark" href="about.html">Learn More</a>
+      <section class="panel dark snapshot" id="about" data-i="1">
+        <div class="content wrap">
+          <div class="snap-grid">
+            <div class="reveal">
+              <div class="eyebrow">01 — About</div>
+              <h2>${lines('Hello, I\'m')}${lines('<span class="script">Yuliani Siti Ruswana</span>')}</h2>
+              <p class="lead">${PROFILE.snapshot}</p>
+              <blockquote>“${PROFILE.quote}”</blockquote>
+              <div class="actions">
+                <a class="btn on-dark solid-dark" href="${PROFILE.cv}" target="_blank" rel="noopener">Download CV</a>
+                <a class="btn on-dark" href="about.html">More about me</a>
+              </div>
+            </div>
+            <div class="snap-photo reveal-img">${media(PROFILE.aboutPhotos[1] || PROFILE.photo, 'Foto diri', '', true)}</div>
+          </div>
+          <div class="stats">
+            <a class="stat reveal" href="projects.html"><span class="ico">${ic.grid}</span><b data-count="${PROJECTS.length}">0</b><small>Selected projects</small><em>Brand, product & book work</em><span class="go">${ic.arrow}</span></a>
+            <a class="stat reveal" href="about.html#achievements"><span class="ico">${ic.award}</span><b data-count="${certCount}">0</b><small>Certifications & awards</small><em>Adobe, BNSP & design challenge</em><span class="go">${ic.arrow}</span></a>
+            <a class="stat reveal" href="about.html#experience"><span class="ico">${ic.pen}</span><b data-count="${years}" data-suffix="+">0</b><small>Years in design</small><em>Agency, brand & publishing</em><span class="go">${ic.arrow}</span></a>
+          </div>
         </div>
-        <div class="count">01 / 03</div>
       </section>
 
-      <section class="panel dark teaser" id="projects" data-i="2">
-        <div class="bg">${media((PROJECTS.find(p => p.featured) || PROJECTS[0]).gallery[0].src, 'Foto latar Projects (opsional)', '', true)}</div>
-        <div class="content wrap reveal">
-          <div class="eyebrow">02 — Works</div>
-          <h2>${lines('Selected <span class="script">works</span>')}</h2>
-          <p>Brand visuals, social content, marketplace imagery, and book illustrations I've made over the years.</p>
-          <a class="btn on-dark" href="projects.html">Learn More</a>
+      <section class="panel light showcase" id="projects" data-i="2">
+        <div class="content wrap">
+          <div class="sc-head reveal">
+            <div class="eyebrow">02 — Works</div>
+            <h2>Portfolio <span class="script">showcase</span></h2>
+            <p>Projects, certifications, and the tools behind them. Each one is a step in how I tell stories visually.</p>
+          </div>
+          <div class="sc-tabs reveal" role="tablist">
+            <button class="on" data-tab="p" role="tab">${ic.grid}<span>Projects</span></button>
+            <button data-tab="c" role="tab">${ic.award}<span>Certificates</span></button>
+            <button data-tab="t" role="tab">${ic.pen}<span>Tools</span></button>
+          </div>
+          <div class="sc-pane on" data-pane="p">
+            <div class="sc-grid">${showcaseProjects.slice(0, 6).map(p => `
+              <a class="sc-card" href="project.html?id=${p.id}">
+                ${media(p.thumb, p.title)}
+                <div class="sc-body">
+                  <div class="meta">${catLabel(p.cat)}</div>
+                  <h3>${p.title}</h3>
+                  <p>${p.short}</p>
+                  <span class="more">View project ${ic.arrow}</span>
+                </div>
+              </a>`).join('')}</div>
+            <div class="sc-foot"><a class="btn" href="projects.html">See all projects</a></div>
+          </div>
+          <div class="sc-pane" data-pane="c">
+            <div class="sc-grid">${CERTIFICATES.map(c => `
+              <div class="sc-card cert ${c.img ? '' : 'text-only'}">
+                ${c.img ? media(c.img, c.title, 'zoomable') : `<div class="cert-text"><span class="script">Certified</span></div>`}
+                <div class="sc-body">
+                  <div class="meta">${c.date}</div>
+                  <h3>${c.title}</h3>
+                  <p>${c.issuer}</p>
+                </div>
+              </div>`).join('')}</div>
+          </div>
+          <div class="sc-pane" data-pane="t">
+            <div class="tool-grid">${TOOLS.map(t => {
+              const [ab, d] = TOOL_INFO[t] || [t.slice(0, 2), ''];
+              return `<div class="tool"><span class="mono">${ab}</span><div><h3>${t}</h3><p>${d}</p></div></div>`;
+            }).join('')}</div>
+          </div>
         </div>
-        <div class="count">02 / 03</div>
       </section>
 
       <section class="panel dark contact-panel" id="contact" data-i="3">
-        <div class="content wrap reveal">
-          <div class="eyebrow">03 — Contact</div>
-          <h2>${lines('Get in <span class="script">touch</span>')}</h2>
-          <p>Feel free to reach out for a project, a role, or just to say hi.</p>
-          <a class="mail" href="mailto:${PROFILE.email}?subject=Hello%20Yuli">${PROFILE.email}</a>
-          <div class="socials">${socials()}</div>
+        <div class="content wrap contact-grid">
+          <div class="reveal">
+            <div class="eyebrow">03 — Contact</div>
+            <h2>${lines('Get in <span class="script">touch</span>')}</h2>
+            <p>Have a project, a role, or just want to say hi? Send me a message and I'll get back to you soon.</p>
+            <a class="mail" href="mailto:${PROFILE.email}?subject=Hello%20Yuli">${PROFILE.email}</a>
+            <div class="socials">${socials()}</div>
+          </div>
+          <form class="cform reveal" id="cform" novalidate>
+            <label><span>Your name</span><input name="name" required autocomplete="name"></label>
+            <label><span>Your email</span><input name="email" type="email" required autocomplete="email"></label>
+            <label><span>Message</span><textarea name="msg" rows="4" required></textarea></label>
+            <p class="err" id="cerr" role="alert"></p>
+            <div class="cbtns">
+              <button class="btn on-dark solid-dark" type="submit" data-via="mail">Send via Email</button>
+              <button class="btn on-dark" type="submit" data-via="wa">Send via WhatsApp</button>
+            </div>
+          </form>
         </div>
         <footer>© 2026 ${PROFILE.name.toUpperCase()}</footer>
       </section>
@@ -122,26 +198,62 @@
     const snap = $('#snap'), panels = $$('.panel'), dots = $$('#dots button');
     const go = i => panels[i] && snap.scrollTo({ top: panels[i].offsetTop, behavior: 'smooth' });
     $$('[data-goto]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); go(+b.dataset.goto); }));
-    const io = new IntersectionObserver(es => es.forEach(en => {
-      if (en.isIntersecting) {
-        const i = +en.target.dataset.i;
-        panels.forEach(p => p.classList.toggle('active', p === en.target));
-        dots.forEach((d, k) => d.classList.toggle('on', k === i));
-        $('#hint').style.opacity = i === 3 ? 0 : 1;
-      }
-    }), { root: snap, threshold: .55 });
-    panels.forEach(p => io.observe(p));
-    // keyboard
-    document.addEventListener('keydown', e => {
-      const cur = panels.findIndex(p => p.classList.contains('active'));
-      if (['ArrowDown', 'PageDown'].includes(e.key)) { e.preventDefault(); go(Math.min(cur + 1, 3)); }
-      if (['ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); go(Math.max(cur - 1, 0)); }
-    });
-    // menu "Contact" on home: scroll instead of reload
+    const setActive = () => {
+      const mid = snap.scrollTop + innerHeight * .45;
+      let i = 0; panels.forEach((p, k) => { if (p.offsetTop <= mid) i = k; });
+      panels.forEach((p, k) => p.classList.toggle('active', k === i));
+      dots.forEach((d, k) => d.classList.toggle('on', k === i));
+      $('#hint').style.opacity = snap.scrollTop > 40 ? 0 : 1;
+    };
+    snap.addEventListener('scroll', setActive, { passive: true }); setActive();
     $$('#menu a[data-key="contact"], #menu a[data-key="home"]').forEach(a => a.addEventListener('click', e => {
       e.preventDefault(); toggleMenu(false); setTimeout(() => go(a.dataset.key === 'contact' ? 3 : 0), 500);
     }));
     if (location.hash === '#contact') setTimeout(() => { snap.scrollTop = panels[3].offsetTop; }, 50);
+
+    /* typing animation */
+    const tEl = $('#typed'); let wi = 0, ci = 0, del = false;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const tick = () => {
+      const w = PROFILE.typing[wi];
+      if (reduce) { tEl.textContent = w; wi = (wi + 1) % PROFILE.typing.length; return setTimeout(tick, 2600); }
+      tEl.textContent = w.slice(0, ci);
+      if (!del && ci < w.length) { ci++; setTimeout(tick, 70); }
+      else if (!del) { del = true; setTimeout(tick, 1800); }
+      else if (ci > 0) { ci--; setTimeout(tick, 35); }
+      else { del = false; wi = (wi + 1) % PROFILE.typing.length; setTimeout(tick, 350); }
+    };
+    setTimeout(tick, 900);
+
+    /* stat counters */
+    const co = new IntersectionObserver(es => es.forEach(en => {
+      if (!en.isIntersecting) return; co.unobserve(en.target);
+      const el = en.target, end = +el.dataset.count, suf = el.dataset.suffix || '', t0 = performance.now();
+      const step = t => { const k = Math.min(1, (t - t0) / 1200), v = Math.round(end * (1 - Math.pow(1 - k, 3)));
+        el.textContent = v + (k === 1 ? suf : ''); if (k < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    }), { root: snap, threshold: .4 });
+    $$('[data-count]').forEach(el => co.observe(el));
+
+    /* showcase tabs */
+    $$('.sc-tabs button').forEach(b => b.onclick = () => {
+      $$('.sc-tabs button').forEach(x => x.classList.toggle('on', x === b));
+      $$('.sc-pane').forEach(p => p.classList.toggle('on', p.dataset.pane === b.dataset.tab));
+    });
+
+    /* contact form: opens email app or WhatsApp with the message filled in */
+    let via = 'mail';
+    $$('#cform [data-via]').forEach(b => b.addEventListener('click', () => { via = b.dataset.via; }));
+    $('#cform').addEventListener('submit', e => {
+      e.preventDefault();
+      const f = e.target, name = f.name.value.trim(), email = f.email.value.trim(), msg = f.msg.value.trim();
+      const err = $('#cerr');
+      if (!name || !msg || !/^\S+@\S+\.\S+$/.test(email)) { err.textContent = 'Please fill in your name, a valid email, and a message.'; return; }
+      err.textContent = '';
+      const body = `${msg}\n\n— ${name} (${email})`;
+      if (via === 'wa') window.open(`${PROFILE.whatsapp}?text=${encodeURIComponent(`Hi Yuli, I'm ${name} (${email}).\n\n${msg}`)}`, '_blank', 'noopener');
+      else location.href = `mailto:${PROFILE.email}?subject=${encodeURIComponent('Hello from ' + name)}&body=${encodeURIComponent(body)}`;
+    });
   }
 
   /* ================= ABOUT ================= */
@@ -206,7 +318,7 @@
       <div class="marquee"><div class="track">${[...TOOLS, ...TOOLS].map(t => `<span>${t}</span>`).join('')}</div></div>
     </section>
 
-    <section class="sec light">
+    <section class="sec light" id="experience">
       <div class="wrap">
         <div class="sec-title reveal"><h2>Professional <span class="script">experience</span></h2></div>
         <div class="exp">${exp}</div>
@@ -244,7 +356,7 @@
       </div>
     </section>
 
-    <section class="sec light" style="padding-top:0">
+    <section class="sec light" id="achievements" style="padding-top:0">
       <div class="wrap">
         <div class="sec-title reveal"><h2>Certifications &amp; <span class="script">achievements</span></h2></div>
         ${ACHIEVEMENTS.map(y => `
