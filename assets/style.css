@@ -660,3 +660,33 @@ body:has(.lightbox.open) .cursor,body:has(.lightbox.open) .cursor-dot{opacity:0!
 html.menu-open,html.menu-open body{overflow:hidden}
 @media (max-width:640px){.menu-panel{padding:22px 24px 28px}.mp-label b{font-size:28px}}
 @media (prefers-reduced-motion:reduce){.menu-panel,.menu nav a,.mp-foot,.menu-backdrop{transition:none}}
+
+/* ===== galeri geser ke samping (SEIS) ===== */
+.hs{--hs-h:400px;margin-top:6px}
+.hs-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.hs-chips button{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border:1px solid var(--line);border-radius:40px;background:none;color:var(--fg);font-family:inherit;font-size:12px;font-weight:500;cursor:pointer;transition:background .3s,color .3s,border-color .3s}
+.hs-chips button small{font-size:10px;font-weight:700;color:var(--gray)}
+.hs-chips button:hover{border-color:var(--fg)}
+.hs-chips button.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.hs-chips button.on small{color:var(--bg);opacity:.7}
+.hs-track{display:flex;align-items:flex-start;gap:16px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;scrollbar-width:none;overscroll-behavior-x:contain;cursor:grab;outline:none;-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent);padding-right:8%}
+.hs-track::-webkit-scrollbar{display:none}
+.hs-track.dragging{cursor:grabbing;scroll-snap-type:none}
+.hs-track.dragging *{pointer-events:none}
+.hs-track figure{flex:none;margin:0;scroll-snap-align:start}
+.hs-track .media{background:var(--media-bg)}
+.hs-track .media img{display:block;height:auto;width:auto;max-height:var(--hs-h);max-width:min(880px,82vw);object-fit:contain;user-select:none;-webkit-user-drag:none}
+.hs-track figcaption{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray);font-weight:600;margin-top:10px;max-width:min(880px,82vw)}
+.hs-label{flex:none;width:170px;height:var(--hs-h);display:flex;flex-direction:column;justify-content:flex-end;gap:6px;padding:0 18px 4px 0;border-left:1px solid var(--fg);padding-left:18px;scroll-snap-align:start}
+.hs-label:not(:first-child){margin-left:22px}
+.hs-label small{font-size:10px;font-weight:700;letter-spacing:.2em;color:var(--gray)}
+.hs-label .script{font-size:54px;line-height:1.1}
+.hs-label em{font-style:normal;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray)}
+.hs-ctrl{display:flex;align-items:center;gap:16px;margin-top:22px}
+.hs-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--fg);background:none;color:var(--fg);font-size:16px;cursor:pointer;transition:background .3s,color .3s,opacity .3s;flex:none}
+.hs-btn:hover:not(:disabled){background:var(--fg);color:var(--bg)}
+.hs-btn:disabled{opacity:.25;cursor:default}
+.hs-bar{flex:1;height:2px;background:var(--line);position:relative;overflow:hidden}
+.hs-bar i{display:block;height:100%;background:var(--fg);transition:margin-left .15s linear,width .3s}
+.hs-count{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gray);white-space:nowrap}
+@media (max-width:640px){.hs{--hs-h:280px}.hs-label{width:120px}.hs-label .script{font-size:40px}.hs-count{display:none}.hs-track{-webkit-mask-image:none;mask-image:none}}

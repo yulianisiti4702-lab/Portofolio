@@ -529,15 +529,26 @@
     const cover = p.cover || p.gallery[0];
     const rest = p.cover ? [] : p.gallery.slice(1);
     const list = a => `<ol>${a.map(x => `<li>${x}</li>`).join('')}</ol>`;
+    // galeri yang digeser ke samping (layout: "scroll"), bisa dikelompokkan per jenis (groups)
+    const hScroll = (s, p) => {
+      // groups hanya dipakai untuk urutan (per jenis sepatu); tampilannya satu baris foto tanpa label
+      const imgs = s.groups ? s.groups.flatMap(g => g.images) : s.images;
+      const fig = ([f, l]) => `<figure>${media((p.imgBase || '') + f + '.jpg', l, 'zoomable').replace('loading="lazy"', 'decoding="async"')}<figcaption>${l}</figcaption></figure>`;
+      return `<div class="hs reveal">
+        <div class="hs-track" tabindex="0" aria-label="${s.title} — scroll sideways">${imgs.map(fig).join('')}</div>
+        <div class="hs-ctrl"><button type="button" class="hs-btn prev" aria-label="Scroll left">←</button><div class="hs-bar"><i></i></div><span class="hs-count">${imgs.length} images</span><button type="button" class="hs-btn next" aria-label="Scroll right">→</button></div>
+      </div>`;
+    };
+
     const sectionsHTML = (p.sections || []).map((s, k) => `
       <section class="sec light pd-section" id="sec-${k}">
         <div class="wrap">
           <div class="pd-sec-head reveal">
-            <span class="num">0${k + 1}</span>
+            <span class="num">${String(k + 1).padStart(2, "0")}</span>
             <div><h2>${s.title}</h2><p>${s.desc}</p></div>
           </div>
-          <div class="pd-grid ${s.layout || 'grid-2'}">${s.images.map(([f, l]) =>
-            `<figure class="reveal-img">${media((p.imgBase || '') + f + '.jpg', l, 'zoomable')}<figcaption>${l}</figcaption></figure>`).join('')}</div>
+          ${s.layout === 'scroll' ? hScroll(s, p) : `<div class="pd-grid ${s.layout || 'grid-2'}">${s.images.map(([f, l]) =>
+            `<figure class="reveal-img">${media((p.imgBase || '') + f + '.jpg', l, 'zoomable')}<figcaption>${l}</figcaption></figure>`).join('')}</div>`}
         </div>
       </section>`).join('');
 
@@ -573,7 +584,7 @@
       </div>
     </section>` : ''}
 
-    ${(p.sections || []).length > 1 ? `<nav class="pd-nav" id="pdNav" aria-label="Project sections"><div class="wrap">${p.sections.map((x, k) => `<a href="#sec-${k}" data-k="${k}"><small>0${k + 1}</small>${x.title}</a>`).join('')}</div></nav>` : ''}
+    ${(p.sections || []).length > 1 ? `<nav class="pd-nav" id="pdNav" aria-label="Project sections"><div class="wrap">${p.sections.map((x, k) => `<a href="#sec-${k}" data-k="${k}"><small>${String(k + 1).padStart(2, "0")}</small>${x.title}</a>`).join('')}</div></nav>` : ''}
     ${sectionsHTML}
     ${rest.length ? `
     <section class="sec light">
@@ -611,6 +622,41 @@
       }
     }, { passive: true });
   }
+
+  /* ---------- galeri geser ke samping ---------- */
+  $$('.hs').forEach(hs => {
+    const tr = $('.hs-track', hs), bar = $('.hs-bar i', hs), chipsB = $$('.hs-chips button', hs), labels = $$('.hs-label', hs);
+    const upd = () => {
+      const m = tr.scrollWidth - tr.clientWidth;
+      bar.style.width = (m > 0 ? Math.max(8, (tr.clientWidth / tr.scrollWidth) * 100) : 100) + '%';
+      bar.style.marginLeft = (m > 0 ? (tr.scrollLeft / tr.scrollWidth) * 100 : 0) + '%';
+      $('.hs-btn.prev', hs).disabled = tr.scrollLeft < 4; $('.hs-btn.next', hs).disabled = tr.scrollLeft > m - 4;
+      if (labels.length) {
+        let cur = 0; labels.forEach((l, i) => { if (l.offsetLeft - tr.offsetLeft <= tr.scrollLeft + 40) cur = i; });
+        chipsB.forEach((b, i) => b.classList.toggle('on', i === cur));
+      }
+    };
+    tr.addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd);
+    $$('img', tr).forEach(im => im.addEventListener('load', upd)); upd();
+    $('.hs-btn.prev', hs).onclick = () => tr.scrollBy({ left: -tr.clientWidth * .8, behavior: 'smooth' });
+    $('.hs-btn.next', hs).onclick = () => tr.scrollBy({ left: tr.clientWidth * .8, behavior: 'smooth' });
+    chipsB.forEach((b, i) => b.onclick = () => tr.scrollTo({ left: labels[i].offsetLeft - tr.offsetLeft, behavior: 'smooth' }));
+    tr.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); tr.scrollBy({ left: 320, behavior: 'smooth' }); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); tr.scrollBy({ left: -320, behavior: 'smooth' }); }
+    });
+    // geser dengan mouse (klik-tahan lalu tarik)
+    let down = null, moved = false;
+    tr.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse' || e.button) return; down = { x: e.clientX, l: tr.scrollLeft }; moved = false; });
+    addEventListener('pointermove', e => {
+      if (!down) return; const dx = e.clientX - down.x;
+      if (Math.abs(dx) > 6) { moved = true; tr.classList.add('dragging'); }
+      if (moved) tr.scrollLeft = down.l - dx;
+    });
+    addEventListener('pointerup', () => { if (!down) return; down = null; setTimeout(() => tr.classList.remove('dragging'), 0); });
+    tr.addEventListener('click', e => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
+    tr.addEventListener('dragstart', e => e.preventDefault());
+  });
 
   /* ---------- menu sub kategori Education ---------- */
   $$('.edu-nav a').forEach(a => a.addEventListener('click', e => {
