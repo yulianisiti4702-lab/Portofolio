@@ -44,28 +44,28 @@ const SKILLS = [
 const TOOLS = ["Adobe Illustrator", "Adobe Photoshop", "Adobe InDesign", "Affinity Designer", "Clip Studio Paint", "Figma", "Canva", "CapCut"];
 
 const EXPERIENCE = [
-  { company: "PT. Kulturama Virtua Solusindo", role: "Graphic Designer", type: "Full-time", start: "Apr 2026", end: "Present", location: "Bandung",
+  { company: "PT. Kulturama Virtua Solusindo", projects: ["shoe-police"], role: "Graphic Designer", type: "Full-time", start: "Apr 2026", end: "Present", location: "Bandung",
     desc: "Designing visual content for the digital media of Shoe Police and Shoe Workshop while keeping every asset consistent with each brand's identity. I produce YouTube thumbnails for long- and short-form videos, Instagram carousels, and other social assets every month, consistently reaching 95%+ of content production targets.",
     tags: ["YouTube Thumbnail", "Instagram Carousel", "Social Media Design", "Brand Consistency"] },
   { company: "PT. Bening Mata Santosa", role: "Staff Casual Admin", type: "Casual", start: "Nov 2025", end: "Feb 2026", location: "Jakarta",
     desc: "Managed company administrative documents, including activity and financial reports for partnership projects, and prepared and checked partnership contracts to make sure every document was complete.",
     tags: ["Documentation", "Reporting", "Contract Administration"] },
-  { company: "SEIS Official Shop", role: "Graphic Designer & Photographer", type: "Full-time", start: "Apr 2025", end: "Nov 2025", location: "Bandung",
+  { company: "SEIS Official Shop", projects: ["seis"], role: "Graphic Designer & Photographer", type: "Full-time", start: "Apr 2025", end: "Nov 2025", location: "Bandung",
     desc: "Produced product photography for marketplace and digital marketing, with multiple visual options for every product. Designed marketplace banners, promotional materials, and launch visuals in line with the brand identity, and planned social media content through Meta's platform.",
     tags: ["Product Photography", "Marketplace Banner", "Ads Visual", "Meta Business"] },
-  { company: "PT. Mizan Pustaka", role: "Freelance Graphic Designer", type: "Freelance", start: "Nov 2024", end: "Feb 2025", location: "Bandung",
+  { company: "PT. Mizan Pustaka", projects: ["dar-mizan", "kkpk"], role: "Freelance Graphic Designer", type: "Freelance", start: "Nov 2024", end: "Feb 2025", location: "Bandung",
     desc: "Designed digital and print promotional materials for DAR! Mizan and KKPK, including Instagram feeds, stories, banners, and Reels thumbnails, plus a Muslim kids' activity sheet and book mockups, producing 50+ designs a month.",
     tags: ["Instagram Feed", "Banner", "Book Mockup", "Activity Sheet"] },
-  { company: "PT. Mizan Pustaka", role: "Illustrator Intern", type: "Internship", start: "Sep 2023", end: "Jan 2024", location: "Bandung",
+  { company: "PT. Mizan Pustaka", projects: ["book-illustration"], role: "Illustrator Intern", type: "Internship", start: "Sep 2023", end: "Jan 2024", location: "Bandung",
     desc: "Created digital illustrations for book editorial needs with Adobe Illustrator and InDesign, including the realistic pencil cover illustration for Lelaki Sunni di Kota Syi'ah and interior illustrations for seven titles. Completed the internship with a 95.5/100 evaluation from the Art Director.",
     tags: ["Editorial Illustration", "Pencil Drawing", "Catalog Design"] }
 ];
 
 const VOLUNTEER = [
-  { org: "Yayasan MyEduSolve Karya Indonesia (YMKI)", role: "Graphic Designer", date: "Feb 2024 – Aug 2024", desc: "Designed 15 Instagram content pieces with consistent visuals and clear communication." },
+  { org: "Yayasan MyEduSolve Karya Indonesia (YMKI)", projects: ["ymki"], role: "Graphic Designer", date: "Feb 2024 – Aug 2024", desc: "Designed 15 Instagram content pieces with consistent visuals and clear communication." },
   { org: "JFLS Goes to School 2023", role: "Field Coordinator", date: "Oct 2023 – Dec 2023", desc: "Reached 1,300+ participants across Kabupaten Bandung with an 84.95% satisfaction rate." },
-  { org: "Beasiswa Rema Berdaya", role: "Graphic Designer", date: "Sep 2022 – Jan 2023", desc: "Sponsorship proposal designs helped increase program funding by 60% and attract 153 participants." },
-  { org: "JFLS Goes to School 2022", role: "Graphic Designer", date: "Apr 2022 – Jul 2022", desc: "Created Instagram designs and Reels, winning the “Most Favorite Reels Video” award." },
+  { org: "Beasiswa Rema Berdaya", cert: "assets/images/certificates/rema-berdaya.jpg", role: "Graphic Designer", date: "Sep 2022 – Jan 2023", desc: "Sponsorship proposal designs helped increase program funding by 60% and attract 153 participants." },
+  { org: "JFLS Goes to School 2022", cert: "assets/images/certificates/jfls-2022.jpg", role: "Graphic Designer", date: "Apr 2022 – Jul 2022", desc: "Created Instagram designs and Reels, winning the “Most Favorite Reels Video” award." },
   { org: "HIKAVI (DKV UPI Student Association)", role: "General Secretary", date: "Oct 2021 – Aug 2022", desc: "Managed organizational documentation, archives, and administration." }
 ];
 
@@ -75,27 +75,38 @@ const EDUCATION = {
   years: "2020 – 2024",
   gpa: "GPA: 3.92 out of 4.00",
   photos: ["", "", ""],
+  // Ijazah & transkrip: isi dengan path gambar (JPG). Transkrip boleh lebih dari 1 halaman.
+  // Data pribadi (tanggal lahir, NIK, QR) sudah ditutup di file gambarnya.
+  diploma: ["assets/docs/ijazah.jpg"],
+  transcript: ["assets/docs/transkrip-1.jpg", "assets/docs/transkrip-2.jpg"],
   text: [
     "I studied Visual Communication Design at Universitas Pendidikan Indonesia on a full Jabar Future Leaders Scholarship from the West Java Provincial Government.",
     "My thesis brought illustration, book design, and augmented reality together in an interactive book that introduces traditional Sundanese musical instruments to elementary school children, tested directly with sixth-grade students.",
     "Outside class, I designed for scholarship programs and community events, and served as General Secretary of HIKAVI, the DKV UPI student association."
   ],
   programs: [
-    { title: "Kampus Merdeka Independent Study (MSIB)", org: "BISA AI", date: "Feb 2023 – Jun 2023",
-      desc: "A government-backed program where I learned user-centered design and design thinking, closing with a capstone project built from user research to prototype." }
+    { title: "Kampus Merdeka Independent Study (MSIB) · Batch 4", org: "PT. Bisa Artifisial Indonesia (BISA AI) · UI/UX track", date: "Feb 2023 – Jun 2023",
+      desc: "A government-backed independent study program where I completed the UI/UX track, covering UX research, UI design, content creation, and video editing, and closed with a capstone project built from user research to prototype. I scored between 80 and 100 in every graded class.",
+      id: "msib", tab: "MSIB", projects: [],
+      cert: ["assets/images/certificates/msib/msib-01.jpg", "assets/images/certificates/msib/msib-02.jpg", "assets/images/certificates/msib/msib-03.jpg", "assets/images/certificates/msib/msib-04.jpg", "assets/images/certificates/msib/msib-05.jpg", "assets/images/certificates/msib/msib-06.jpg", "assets/images/certificates/msib/msib-07.jpg", "assets/images/certificates/msib/msib-08.jpg", "assets/images/certificates/msib/msib-09.jpg", "assets/images/certificates/msib/msib-10.jpg"], certCaps: ["Certificate", "Learning outcomes 1/9", "Learning outcomes 2/9", "Learning outcomes 3/9", "Learning outcomes 4/9", "Learning outcomes 5/9", "Learning outcomes 6/9", "Learning outcomes 7/9", "Learning outcomes 8/9", "Learning outcomes 9/9"],
+      courses: ["assets/images/certificates/msib/course-05.jpg", "assets/images/certificates/msib/course-10.jpg", "assets/images/certificates/msib/course-11.jpg", "assets/images/certificates/msib/course-18.jpg", "assets/images/certificates/msib/course-24.jpg", "assets/images/certificates/msib/course-28.jpg", "assets/images/certificates/msib/course-33.jpg", "assets/images/certificates/msib/course-46.jpg"], courseCaps: ["Basic Tools Online Graphic Design: Canva", "Basic Motion Graphic: After Effects Keyframe", "Basic Mobile Video Editing: CapCut", "Basic Video Editing: Adobe Premiere", "Basic Mobile Video Editing: InShot", "Basic Figma: Mobile App UI", "Building a Mobile App UX Prototype", "UX Design Fundamentals for a UX Career"] },
+    { title: "Illustrator Internship", org: "PT. Mizan Pustaka · Artistic Division", date: "Sep 2023 – Jan 2024",
+      desc: "A 4-month internship at a Bandung-based publishing house, creating editorial and cover illustrations for published titles and designing digital catalogs. I finished with a 95.5/100 evaluation from the Art Director.",
+      id: "mizan", tab: "Magang Mizan", projects: ["book-illustration"] }
   ]
 };
 
 const ACHIEVEMENTS = [
   { year: "2024", items: [
-    { title: "Adobe Certified Professional", sub: "Graphic Design & Illustration Using Adobe Illustrator · Score 882/1000", date: "Apr 2024" },
-    { title: "BNSP Certificate of Competence", sub: "Medior Graphic Designer (Desain Grafis Madya) · LSP P1 Universitas Pendidikan Indonesia", date: "Apr 2024" },
-    { title: "Winner, MyEduSolve Design Challenge", sub: "“The Happiness of Giving” · MyEduSolve, YMKI & Hoshizora Foundation", date: "Feb 2024" },
-    { title: "PTESOL English Proficiency · 467/677", sub: "Language Center, Universitas Pendidikan Indonesia", date: "Jan 2024" },
+    { title: "Adobe Certified Professional", cert: ["assets/images/certificates/adobe.jpg", "assets/images/certificates/adobe-score.jpg"], certCaps: ["Certificate", "Exam score report"], sub: "Graphic Design & Illustration Using Adobe Illustrator · Score 882/1000", date: "Apr 2024" },
+    { title: "BNSP Certificate of Competence", cert: "assets/images/certificates/bnsp.jpg", sub: "Medior Graphic Designer (Desain Grafis Madya) · LSP P1 Universitas Pendidikan Indonesia", date: "Apr 2024" },
+    { title: "Winner, MyEduSolve Design Challenge", cert: "assets/images/certificates/myedusolve.jpg", sub: "“The Happiness of Giving” · MyEduSolve, YMKI & Hoshizora Foundation", date: "Feb 2024" },
+    { title: "PTESOL English Proficiency · 467/677", cert: "assets/images/certificates/ptesol.jpg", sub: "Language Center, Universitas Pendidikan Indonesia", date: "Jan 2024" },
     { title: "95.5/100 Internship Evaluation", sub: "Art Director, PT. Mizan Pustaka", date: "Jan 2024" } ] },
   { year: "2023", items: [
-    { title: "Registered Copyright: Tongkat Ajaib", sub: "Children's storybook illustration · Kemenkumham RI", date: "Dec 2023" },
-    { title: "Basic Adobe Illustrator: Mastering Fundamental", sub: "Training completion · SekolahDesain", date: "Jan 2023" } ] },
+    { title: "Registered Copyright: Tongkat Ajaib", cert: "assets/images/certificates/hki-tongkat-ajaib.jpg", sub: "Children's storybook illustration · Kemenkumham RI", date: "Dec 2023" },
+    { title: "MSIB Batch 4 Certificate · UI/UX", cert: ["assets/images/certificates/msib/msib-01.jpg", "assets/images/certificates/msib/msib-02.jpg", "assets/images/certificates/msib/msib-03.jpg", "assets/images/certificates/msib/msib-04.jpg", "assets/images/certificates/msib/msib-05.jpg", "assets/images/certificates/msib/msib-06.jpg", "assets/images/certificates/msib/msib-07.jpg", "assets/images/certificates/msib/msib-08.jpg", "assets/images/certificates/msib/msib-09.jpg", "assets/images/certificates/msib/msib-10.jpg"], certCaps: ["Certificate", "Learning outcomes 1/9", "Learning outcomes 2/9", "Learning outcomes 3/9", "Learning outcomes 4/9", "Learning outcomes 5/9", "Learning outcomes 6/9", "Learning outcomes 7/9", "Learning outcomes 8/9", "Learning outcomes 9/9"], sub: "Kampus Merdeka Independent Study · PT. Bisa Artifisial Indonesia (BISA AI)", date: "Jun 2023" },
+    { title: "Basic Adobe Illustrator: Mastering Fundamental", cert: "assets/images/certificates/sekolahdesain.jpg", sub: "Training completion · SekolahDesain", date: "Jan 2023" } ] },
   { year: "2022", items: [
     { title: "Most Favorite Reels Video", sub: "JFLS Goes to School 2022", date: "2022" } ] },
   { year: "2020", items: [
@@ -109,8 +120,11 @@ const CERTIFICATES = [
   { title: "BNSP Certificate of Competence", issuer: "Medior Graphic Designer · LSP P1 Universitas Pendidikan Indonesia", date: "Apr 2024", img: "assets/images/certificates/bnsp.jpg" },
   { title: "Winner, MyEduSolve Design Challenge", issuer: "MyEduSolve, YMKI & Hoshizora Foundation", date: "Feb 2024", img: "assets/images/certificates/myedusolve.jpg" },
   { title: "Basic Adobe Illustrator: Mastering Fundamental", issuer: "SekolahDesain", date: "Jan 2023", img: "assets/images/certificates/sekolahdesain.jpg" },
-  { title: "Registered Copyright: Tongkat Ajaib", issuer: "Kemenkumham RI · Children's storybook illustration", date: "Dec 2023", img: "" },
-  { title: "PTESOL English Proficiency · 467", issuer: "Language Center, Universitas Pendidikan Indonesia", date: "Jan 2024", img: "" }
+  { title: "Volunteer, JFLS Goes to School 2022", issuer: "Dinas Pendidikan Provinsi Jawa Barat", date: "2022", img: "assets/images/certificates/jfls-2022.jpg" },
+  { title: "Committee, Beasiswa Rema Berdaya 2022", issuer: "BEM REMA Universitas Pendidikan Indonesia", date: "Dec 2022", img: "assets/images/certificates/rema-berdaya.jpg" },
+  { title: "Registered Copyright: Tongkat Ajaib", issuer: "Kemenkumham RI · Children's storybook illustration", date: "Dec 2023", img: "assets/images/certificates/hki-tongkat-ajaib.jpg" },
+  { title: "MSIB Batch 4 · UI/UX", issuer: "Kampus Merdeka · PT. Bisa Artifisial Indonesia", date: "Jun 2023", img: "assets/images/certificates/msib/msib-01.jpg" },
+  { title: "PTESOL English Proficiency · 467", issuer: "Language Center, Universitas Pendidikan Indonesia", date: "Jan 2024", img: "assets/images/certificates/ptesol.jpg" }
 ];
 
 // Keterangan singkat tiap software untuk tab "Tools" di halaman depan
@@ -328,7 +342,7 @@ const PROJECTS = [
    ],
  },
 
- { id: "tongkat-ajaib", cat: "editorial", title: "Tongkat Ajaib", year: "",
+ { id: "tongkat-ajaib", cat: "editorial", title: "Tongkat Ajaib", year: "2023",
    short: "A copyrighted fantasy storybook about kindness, written and illustrated from scratch.",
    intro: "A fantasy storybook created as the final project for a Digital Illustration course, aimed at early elementary readers (ages 6–10). “Tongkat Ajaib” follows Tia, a young girl who chooses to care for her sick mother instead of playing with her friends, and is rewarded with a magic wand for her devotion. The story carries a moral message about devotion and kindness toward parents.",
    meta: ["Writer & Illustrator", "Course Project"],

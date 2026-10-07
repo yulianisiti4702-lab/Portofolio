@@ -67,12 +67,30 @@
       </div>
     </footer>`;
 
+  /* ---------- kanvas doodle (dipakai di Home, setelah Contact) ---------- */
+  const sketchHTML = () => `
+        <div class="wrap sketch-grid">
+        <div class="reveal">
+          <div class="eyebrow">Your turn</div>
+          <h2>Leave me a <span class="script">doodle</span></h2>
+          <p>Drawing is where all my work begins. Grab the brush and sketch anything you like, then save it as a little souvenir.</p>
+        </div>
+        <div class="sketch reveal">
+          <div class="sk-tools">
+            <div class="sk-group"><button class="on" data-tool="ink" aria-label="Ink"><i class="sw ink"></i></button><button data-tool="gray" aria-label="Pencil gray"><i class="sw gray"></i></button><button data-tool="erase" aria-label="Eraser">Erase</button></div>
+            <div class="sk-group"><button data-size="2" aria-label="Thin"><i class="dot" style="width:4px;height:4px"></i></button><button class="on" data-size="4" aria-label="Medium"><i class="dot" style="width:8px;height:8px"></i></button><button data-size="10" aria-label="Thick"><i class="dot" style="width:14px;height:14px"></i></button></div>
+            <div class="sk-group"><button data-act="undo">Undo</button><button data-act="clear">Clear</button><button data-act="save" class="save">Save ↓</button></div>
+          </div>
+          <div class="sk-paper"><canvas aria-label="Drawing canvas"></canvas><span class="sk-hint script">draw here</span></div>
+        </div>
+      </div>`;
+
   /* ================= HOME ================= */
   function renderHome() {
     document.title = `${PROFILE.name} | Portfolio`;
     const years = new Date().getFullYear() - (PROFILE.experienceSince || 2023);
     const certCount = ACHIEVEMENTS.reduce((n, y) => n + y.items.length, 0);
-    const showcaseProjects = [...PROJECTS].filter(p => p.thumb).sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+    const showcaseProjects = byNewest(PROJECTS.filter(p => p.thumb));
     const ic = {
       arrow: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17 17 7M8 7h9v9"/></svg>',
       grid: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>',
@@ -108,7 +126,6 @@
               <div class="eyebrow">01 — About</div>
               <h2>${lines('Hello, I\'m')}${lines('<span class="script">Yuliani Siti Ruswana</span>')}</h2>
               <p class="lead">${PROFILE.snapshot}</p>
-              <blockquote>“${PROFILE.quote}”</blockquote>
               <div class="actions">
                 <a class="btn on-dark solid-dark" href="${PROFILE.cv}" target="_blank" rel="noopener">Download CV</a>
                 <a class="btn on-dark" href="about.html">More about me</a>
@@ -125,7 +142,6 @@
       </section>
 
       <section class="panel light showcase" id="projects" data-i="2">
-        <div class="scroll-band" aria-hidden="true"><div class="sb-track" data-dir="left"><span>Graphic Design</span><span>Illustration</span><span>Visual Content</span><span>Product Photography</span><span>Graphic Design</span><span>Illustration</span><span>Visual Content</span><span>Product Photography</span><span>Graphic Design</span><span>Illustration</span><span>Visual Content</span><span>Product Photography</span><span>Graphic Design</span><span>Illustration</span><span>Visual Content</span><span>Product Photography</span></div></div>
         <div class="content wrap">
           <div class="sc-head reveal">
             <div class="eyebrow">02 — Works</div>
@@ -190,10 +206,14 @@
             </div>
           </form>
         </div>
+      </section>
+
+      <section class="panel light sketch-sec doodle-panel" id="doodle" data-i="4">
+        ${sketchHTML()}
         <footer>© 2026 ${PROFILE.name.toUpperCase()}</footer>
       </section>
     </div>
-    <div class="dots" id="dots">${[0, 1, 2, 3].map(i => `<button data-goto="${i}" aria-label="Section ${i + 1}"></button>`).join('')}</div>
+    <div class="dots" id="dots">${[0, 1, 2, 3, 4].map(i => `<button data-goto="${i}" aria-label="Section ${i + 1}"></button>`).join('')}</div>
     <div class="scroll-hint" id="hint">Scroll</div>`;
 
     const snap = $('#snap'), panels = $$('.panel'), dots = $$('#dots button');
@@ -258,6 +278,27 @@
   }
 
   /* ================= ABOUT ================= */
+  // tombol untuk membuka dokumen (ijazah, transkrip, sertifikat) di galeri
+  function docBtn(files, label, cap, group) {
+    files = files || [];
+    if (!files.length) return '';
+    return files.map((f, i) => `<button class="doc-btn" data-view="${f}" data-cap="${cap}${files.length > 1 ? ' · page ' + (i + 1) : ''}" data-group="${group}"${i ? ' hidden' : ''}>${label} <i aria-hidden="true">↗</i></button>`).join('');
+  }
+
+  // tombol "View certificate" (bisa lebih dari 1 halaman, misal sertifikat + score report)
+  function certBtn(files, title, group, caps, extra = '', label = 'View certificate', unit = 'pages') {
+    files = [].concat(files || []);
+    if (!files.length) return '';
+    return files.map((f, i) => `<button class="doc-btn sm ${extra}" data-view="${f}" data-cap="${title}${caps && caps[i] ? ' · ' + caps[i] : ''}" data-group="${group}"${i ? ' hidden' : ''}>${label}${files.length > 1 ? ` <small>${files.length} ${unit}</small>` : ''} <i aria-hidden="true">↗</i></button>`).join('');
+  }
+
+  // tombol "lihat hasil project" di setiap pengalaman kerja
+  function expLinks(ids) {
+    const list = (ids || []).map(id => PROJECTS.find(p => p.id === id)).filter(Boolean);
+    if (!list.length) return '';
+    return `<div class="exp-links">${list.map(p => `<a class="exp-link" href="project.html?id=${p.id}"><span>View project</span><b>${p.title.replace(/ — .*/, '')}</b><i aria-hidden="true">→</i></a>`).join('')}</div>`;
+  }
+
   function renderAbout() {
     document.title = `About | ${PROFILE.name}`;
     const exp = EXPERIENCE.map((x, i) => `
@@ -273,6 +314,7 @@
           <h4>${x.role}<span>•</span>${x.type}</h4>
           <p>${x.desc}</p>
           <div class="chips">${chips(x.tags)}</div>
+          ${expLinks(x.projects)}
         </div>
       </article>`).join('');
 
@@ -332,7 +374,7 @@
         <div class="sec-title reveal"><h2>Volunteer &amp; <span class="script">organization</span></h2>
           <p>Where I first learned to design for real audiences and real goals.</p></div>
         <div class="vol reveal">${VOLUNTEER.map(v => `
-          <div class="vol-item"><div class="date">${v.date}</div><h3>${v.org}</h3><h4>${v.role}</h4><p>${v.desc}</p></div>`).join('')}</div>
+          <div class="vol-item"><div class="date">${v.date}</div><h3>${v.org}</h3><h4>${v.role}</h4><p>${v.desc}</p>${certBtn(v.cert, v.org, 'vol-certs', null, 'on-dark')}${expLinks(v.projects)}</div>`).join('')}</div>
       </div>
     </section>
 
@@ -340,7 +382,11 @@
       <div class="wrap">
         <div class="sec-title reveal"><h2><span class="script">Education</span></h2>
           <p>Get to know more about my educational background.</p></div>
-        <div class="edu">
+        <nav class="edu-nav reveal" aria-label="Education sections">
+          <a href="#edu-upi"><small>01</small>S1 · UPI</a>
+          ${(EDUCATION.programs || []).map((g, k) => `<a href="#edu-${g.id}"><small>0${k + 2}</small>${g.tab}</a>`).join('')}
+        </nav>
+        <div class="edu" id="edu-upi">
           <div class="reveal">
             <div class="years">${EDUCATION.years}</div>
             <h3>${EDUCATION.school}</h3>
@@ -350,8 +396,13 @@
           <div class="reveal">
             ${EDUCATION.text.map(p => `<p>${p}</p>`).join('')}
             <span class="gpa">${EDUCATION.gpa}</span>
+            <div class="doc-btns">
+              ${docBtn(EDUCATION.diploma, 'View diploma', 'Diploma (Ijazah)', 'diploma')}
+              ${docBtn(EDUCATION.transcript, 'View transcript', 'Academic transcript', 'transcript')}
+            </div>
+            ${!(EDUCATION.diploma || []).length || !(EDUCATION.transcript || []).length ? `<p style="margin-top:10px">${NOTE('tombol ijazah & transkrip muncul setelah file-nya dimasukkan')}</p>` : ''}
             ${(EDUCATION.programs || []).map(g => `
-              <div class="edu-prog"><small>${g.date}</small><h4>${g.title}</h4><b>${g.org}</b><p>${g.desc}</p></div>`).join('')}
+              <div class="edu-prog" id="edu-${g.id}"><small>${g.date}</small><h4>${g.title}</h4><b>${g.org}</b><p>${g.desc}</p>${g.cert || g.courses ? `<div class="doc-btns">${certBtn(g.cert, g.title.replace(/ ·.*/, ''), 'cert-' + g.id, g.certCaps)}${certBtn(g.courses, 'BISA Design Academy', 'courses-' + g.id, g.courseCaps, '', 'Course certificates', 'certificates')}</div>` : ''}${expLinks(g.projects)}</div>`).join('')}
           </div>
         </div>
       </div>
@@ -362,32 +413,14 @@
         <div class="sec-title reveal"><h2>Certifications &amp; <span class="script">achievements</span></h2></div>
         ${ACHIEVEMENTS.map(y => `
           <div class="ach-year reveal"><h3>${y.year}</h3><div class="ach-list">${y.items.map(a => `
-            <div class="ach"><div><h4>${a.title}</h4><p>${a.sub}</p></div><span class="d">${a.date}</span></div>`).join('')}
+            <div class="ach"><div><h4>${a.title}</h4><p>${a.sub}</p>${certBtn(a.cert, a.title, 'certs', a.certCaps)}</div><span class="d">${a.date}</span></div>`).join('')}
           </div></div>`).join('')}
-      </div>
-    </section>
-
-    <section class="sec light sketch-sec" id="doodle">
-      <div class="wrap sketch-grid">
-        <div class="reveal">
-          <div class="eyebrow">Your turn</div>
-          <h2>Leave me a <span class="script">doodle</span></h2>
-          <p>Drawing is where all my work begins. Grab the brush and sketch anything you like, then save it as a little souvenir.</p>
-        </div>
-        <div class="sketch reveal">
-          <div class="sk-tools">
-            <div class="sk-group"><button class="on" data-tool="ink" aria-label="Ink"><i class="sw ink"></i></button><button data-tool="gray" aria-label="Pencil gray"><i class="sw gray"></i></button><button data-tool="erase" aria-label="Eraser">Erase</button></div>
-            <div class="sk-group"><button data-size="2" aria-label="Thin"><i class="dot" style="width:4px;height:4px"></i></button><button class="on" data-size="4" aria-label="Medium"><i class="dot" style="width:8px;height:8px"></i></button><button data-size="10" aria-label="Thick"><i class="dot" style="width:14px;height:14px"></i></button></div>
-            <div class="sk-group"><button data-act="undo">Undo</button><button data-act="clear">Clear</button><button data-act="save" class="save">Save ↓</button></div>
-          </div>
-          <div class="sk-paper"><canvas aria-label="Drawing canvas"></canvas><span class="sk-hint script">draw here</span></div>
-        </div>
       </div>
     </section>
 
     <section class="sec dark quote">
       <div class="wrap reveal">
-        <blockquote>“${PROFILE.quote}”</blockquote>
+        <blockquote>Have a story to tell?</blockquote>
         <a class="btn on-dark" href="index.html#contact">Want to work together? Get in touch</a>
       </div>
     </section>
@@ -409,10 +442,24 @@
   }
 
   /* ================= PROJECTS ================= */
+  // urutkan project dari yang terbaru ke yang terlama (berdasarkan tanggal selesai)
+  function projDate(p) {
+    const M = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, mei: 5, jun: 6, jul: 7, aug: 8, agu: 8, sep: 9, oct: 10, okt: 10, nov: 11, dec: 12, des: 12 };
+    const txt = [...(p.meta || []), p.year || ''].join(' | ');
+    if (/present/i.test(txt)) return 999999;
+    const range = (p.meta || []).find(m => /\d{4}/.test(m) && /–|-/.test(m)) || p.year || '';
+    const end = String(range).split(/–|-/).pop().trim();
+    const y = (end.match(/\d{4}/) || [])[0];
+    if (!y) return 0;
+    const mo = M[(end.match(/[A-Za-z]{3}/) || [''])[0].toLowerCase()] || 6; // hanya tahun → anggap pertengahan tahun
+    return +y * 100 + mo;
+  }
+  const byNewest = list => list.map((p, i) => [p, i]).sort((a, b) => projDate(b[0]) - projDate(a[0]) || a[1] - b[1]).map(x => x[0]);
+
   function renderProjects() {
     document.title = `Projects | ${PROFILE.name}`;
     const f = PROJECTS.find(p => p.featured) || PROJECTS[0];
-    const g = f.gallery;
+    const g = f.gallery || [];
     app.innerHTML = `
     <section class="page-hero">
       <div class="bg">${media(g[0] && g[0].src, 'Foto latar Projects (opsional)', '', true)}</div>
@@ -426,33 +473,12 @@
 
     <section class="sec light">
       <div class="wrap">
-        <div class="sec-title reveal"><h2><span class="script">Highlight</span></h2></div>
-        <div class="highlight">
-          <div class="imgs">
-            ${media(g[0] && g[0].src, g[0] ? g[0].label : 'Foto 1', 'reveal-img')}
-            ${media(g[1] && g[1].src, g[1] ? g[1].label : 'Foto 2', 'reveal-img')}
-            ${media(g[2] && g[2].src, g[2] ? g[2].label : 'Foto 3', 'reveal-img')}
-          </div>
-          <div class="reveal">
-            <div class="eyebrow">${catLabel(f.cat)} · ${f.year}</div>
-            <h3>${f.title}</h3>
-            <p>${f.intro}</p>
-            <div class="chips">${chips(f.tags)}</div>
-            <a class="btn solid" href="project.html?id=${f.id}">View project</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="scroll-band" aria-hidden="true"><div class="sb-track" data-dir="right"><span>Brand & Social Media</span><span>Marketplace & Product</span><span>Editorial & Illustration</span><span>Personal Work</span><span>Brand & Social Media</span><span>Marketplace & Product</span><span>Editorial & Illustration</span><span>Personal Work</span><span>Brand & Social Media</span><span>Marketplace & Product</span><span>Editorial & Illustration</span><span>Personal Work</span><span>Brand & Social Media</span><span>Marketplace & Product</span><span>Editorial & Illustration</span><span>Personal Work</span></div></div>
-    <section class="sec light">
-      <div class="wrap">
-        <div class="sec-title reveal"><h2>Other noteworthy <span class="script">works</span></h2></div>
+        <div class="sec-title reveal"><h2>Selected <span class="script">works</span></h2></div>
         <div class="filters reveal">
           <button class="on" data-f="all">All</button>
           ${CATEGORIES.map(c => `<button data-f="${c.key}">${c.label}</button>`).join('')}
         </div>
-        <div class="grid">${PROJECTS.map(p => `
+        <div class="grid">${byNewest(PROJECTS).map(p => `
           <a class="card reveal" data-cat="${p.cat}" href="project.html?id=${p.id}">
             ${media(p.thumb || (p.gallery[0] && p.gallery[0].src), p.gallery[0] ? p.gallery[0].label : p.title)}
             <div class="meta"><span>${catLabel(p.cat)}</span><span>${p.year || NOTE('tahun?')}</span></div>
@@ -484,11 +510,12 @@
   /* ================= PROJECT DETAIL ================= */
   function renderProject() {
     const id = new URLSearchParams(location.search).get('id');
-    const i = PROJECTS.findIndex(p => p.id === id);
+    const ORDER = byNewest(PROJECTS);
+    const i = ORDER.findIndex(p => p.id === id);
     if (i < 0) { location.replace('projects.html'); return; }
-    const p = PROJECTS[i];
-    const prev = PROJECTS[(i - 1 + PROJECTS.length) % PROJECTS.length];
-    const next = PROJECTS[(i + 1) % PROJECTS.length];
+    const p = ORDER[i];
+    const prev = ORDER[(i - 1 + ORDER.length) % ORDER.length];
+    const next = ORDER[(i + 1) % ORDER.length];
     document.title = `${p.title} | ${PROFILE.name}`;
     const cover = p.cover || p.gallery[0];
     const rest = p.cover ? [] : p.gallery.slice(1);
@@ -576,6 +603,14 @@
     }, { passive: true });
   }
 
+  /* ---------- menu sub kategori Education ---------- */
+  $$('.edu-nav a').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault(); const t = $(a.getAttribute('href')); if (!t) return;
+    $$('.edu-nav a').forEach(x => x.classList.toggle('on', x === a));
+    t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (t.classList.contains('edu-prog')) { t.classList.remove('flash'); void t.offsetWidth; t.classList.add('flash'); }
+  }));
+
   /* ---------- reveal on scroll ---------- */
   const ro = new IntersectionObserver(es => es.forEach(en => {
     if (en.isIntersecting) { en.target.classList.add('in'); ro.unobserve(en.target); }
@@ -607,7 +642,14 @@
   const lbClose = () => lbx.classList.remove('open');
   document.addEventListener('click', e => {
     const img = e.target.closest('.zoomable img');
-    if (img) { lbList = $$('.zoomable img'); lbx.classList.add('open'); lbShow(lbList.indexOf(img)); return; }
+    if (img) { lbList = $$('.zoomable img'); lbx.classList.remove('is-doc'); lbx.classList.add('open'); lbShow(lbList.indexOf(img)); return; }
+    const doc = e.target.closest('[data-view]');
+    if (doc) {
+      const grp = $$(`[data-view][data-group="${doc.dataset.group}"]`);
+      lbList = grp.map(b => ({ src: b.dataset.view, alt: b.dataset.cap }));
+      lbx.classList.toggle('is-doc', doc.dataset.group !== 'certs'); lbx.scrollTop = 0;
+      lbx.classList.add('open'); lbShow(grp.indexOf(doc)); return;
+    }
     if (!lbx.classList.contains('open')) return;
     if (e.target.closest('.lb-nav.prev')) return lbShow(lbIdx - 1);
     if (e.target.closest('.lb-nav.next')) return lbShow(lbIdx + 1);

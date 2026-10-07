@@ -583,3 +583,56 @@ img[data-parallax]{translate:0 var(--py,0px);scale:1.14;will-change:translate}
 body:has(.lightbox.open) .cursor,body:has(.lightbox.open) .cursor-dot{opacity:0!important}
 
 .sketch canvas{cursor:crosshair}
+
+/* tombol ke project di Professional Experience */
+.exp-links{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.exp-link{display:inline-flex;align-items:center;gap:12px;padding:12px 20px;border:1px solid var(--fg);border-radius:40px;font-size:13px;transition:background .3s,color .3s}
+.exp-link span{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gray);transition:color .3s}
+.exp-link b{font-weight:600}
+.exp-link i{font-style:normal;transition:transform .3s}
+.exp-link:hover{background:var(--fg);color:var(--bg)}
+.exp-link:hover span{color:var(--bg)}
+.exp-link:hover i{transform:translateX(4px)}
+
+/* tombol project di Volunteer */
+.vol-item .exp-links{margin-top:18px}
+.vol-item .exp-link{border-color:#555;color:var(--white,#fff)}
+.vol-item .exp-link:hover{background:#fff;color:#111;border-color:#fff}
+.vol-item .exp-link:hover span{color:#111}
+
+/* menu sub kategori Education */
+.edu-nav{display:flex;flex-wrap:wrap;gap:8px;margin:-10px 0 48px}
+.edu-nav a{display:inline-flex;align-items:center;gap:10px;padding:10px 18px;border:1px solid var(--line);border-radius:40px;font-size:12px;font-weight:500;transition:background .3s,color .3s,border-color .3s}
+.edu-nav a small{font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--gray)}
+.edu-nav a:hover,.edu-nav a.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.edu-nav a:hover small,.edu-nav a.on small{color:var(--bg)}
+#edu-upi,.edu-prog{scroll-margin-top:110px}
+.edu-prog .exp-links{margin-top:18px}
+.edu-prog.flash{animation:eduFlash 1.4s ease}
+@keyframes eduFlash{0%{background:var(--line)}100%{background:transparent}}
+
+/* tombol dokumen (ijazah, transkrip, sertifikat) */
+.doc-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.doc-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border:1px solid var(--fg);background:none;color:var(--fg);font-family:inherit;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background .3s,color .3s}
+.doc-btn:hover{background:var(--fg);color:var(--bg)}
+.doc-btn i{font-style:normal;transition:transform .3s}
+.doc-btn:hover i{transform:translate(2px,-2px)}
+.doc-btn.sm{margin-top:10px;padding:7px 14px;font-size:10px}
+.edu-prog .exp-link b{display:inline;margin:0;color:inherit;font-size:13px;font-weight:600}
+.vol-item .exp-link span{color:#999}
+
+.doc-btn[hidden]{display:none}
+/* ijazah & transkrip: tampil lebih besar dan bisa di-scroll agar tulisannya terbaca */
+.lightbox.is-doc{justify-content:flex-start;overflow-y:auto;padding-top:70px;padding-bottom:70px}
+.lightbox.is-doc img{max-height:none;width:min(1000px,100%);height:auto}
+.lightbox.is-doc .lb-nav{position:fixed}
+.lightbox.is-doc .lb-close{position:fixed}
+.lightbox.is-doc{background:rgba(10,10,10,.97)}
+
+.doc-btn small{font-size:9px;letter-spacing:.14em;opacity:.6;font-weight:600}
+.doc-btn.on-dark{border-color:#555;color:#fff;margin-top:16px}
+.doc-btn.on-dark:hover{background:#fff;color:#111;border-color:#fff}
+.edu-prog .doc-btns{margin-top:18px}
+.edu-prog .doc-btn.sm{margin-top:0}
+.doodle-panel>.wrap{width:100%}
+.doodle-panel footer{position:absolute;bottom:26px;left:0;right:0;text-align:center;font-size:11px;letter-spacing:.2em;color:var(--gray)}
