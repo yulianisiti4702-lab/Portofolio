@@ -125,6 +125,7 @@
       </section>
 
       <section class="panel light showcase" id="projects" data-i="2">
+        <div class="scroll-band" aria-hidden="true"><div class="sb-track" data-dir="left"><span>Graphic Design</span><span>Illustration</span><span>Visual Content</span><span>Product Photography</span><span>Graphic Design</span><span>Illustration</span><span>Visual Content</span><span>Product Photography</span><span>Graphic Design</span><span>Illustration</span><span>Visual Content</span><span>Product Photography</span><span>Graphic Design</span><span>Illustration</span><span>Visual Content</span><span>Product Photography</span></div></div>
         <div class="content wrap">
           <div class="sc-head reveal">
             <div class="eyebrow">02 — Works</div>
@@ -366,6 +367,24 @@
       </div>
     </section>
 
+    <section class="sec light sketch-sec" id="doodle">
+      <div class="wrap sketch-grid">
+        <div class="reveal">
+          <div class="eyebrow">Your turn</div>
+          <h2>Leave me a <span class="script">doodle</span></h2>
+          <p>Drawing is where all my work begins. Grab the brush and sketch anything you like, then save it as a little souvenir.</p>
+        </div>
+        <div class="sketch reveal">
+          <div class="sk-tools">
+            <div class="sk-group"><button class="on" data-tool="ink" aria-label="Ink"><i class="sw ink"></i></button><button data-tool="gray" aria-label="Pencil gray"><i class="sw gray"></i></button><button data-tool="erase" aria-label="Eraser">Erase</button></div>
+            <div class="sk-group"><button data-size="2" aria-label="Thin"><i class="dot" style="width:4px;height:4px"></i></button><button class="on" data-size="4" aria-label="Medium"><i class="dot" style="width:8px;height:8px"></i></button><button data-size="10" aria-label="Thick"><i class="dot" style="width:14px;height:14px"></i></button></div>
+            <div class="sk-group"><button data-act="undo">Undo</button><button data-act="clear">Clear</button><button data-act="save" class="save">Save ↓</button></div>
+          </div>
+          <div class="sk-paper"><canvas aria-label="Drawing canvas"></canvas><span class="sk-hint script">draw here</span></div>
+        </div>
+      </div>
+    </section>
+
     <section class="sec dark quote">
       <div class="wrap reveal">
         <blockquote>“${PROFILE.quote}”</blockquote>
@@ -425,7 +444,8 @@
       </div>
     </section>
 
-    <section class="sec light" style="padding-top:0">
+    <div class="scroll-band" aria-hidden="true"><div class="sb-track" data-dir="right"><span>Brand & Social Media</span><span>Marketplace & Product</span><span>Editorial & Illustration</span><span>Personal Work</span><span>Brand & Social Media</span><span>Marketplace & Product</span><span>Editorial & Illustration</span><span>Personal Work</span><span>Brand & Social Media</span><span>Marketplace & Product</span><span>Editorial & Illustration</span><span>Personal Work</span><span>Brand & Social Media</span><span>Marketplace & Product</span><span>Editorial & Illustration</span><span>Personal Work</span></div></div>
+    <section class="sec light">
       <div class="wrap">
         <div class="sec-title reveal"><h2>Other noteworthy <span class="script">works</span></h2></div>
         <div class="filters reveal">
@@ -474,7 +494,7 @@
     const rest = p.cover ? [] : p.gallery.slice(1);
     const list = a => `<ol>${a.map(x => `<li>${x}</li>`).join('')}</ol>`;
     const sectionsHTML = (p.sections || []).map((s, k) => `
-      <section class="sec light pd-section">
+      <section class="sec light pd-section" id="sec-${k}">
         <div class="wrap">
           <div class="pd-sec-head reveal">
             <span class="num">0${k + 1}</span>
@@ -517,6 +537,7 @@
       </div>
     </section>` : ''}
 
+    ${(p.sections || []).length > 1 ? `<nav class="pd-nav" id="pdNav" aria-label="Project sections"><div class="wrap">${p.sections.map((x, k) => `<a href="#sec-${k}" data-k="${k}"><small>0${k + 1}</small>${x.title}</a>`).join('')}</div></nav>` : ''}
     ${sectionsHTML}
     ${rest.length ? `
     <section class="sec light">
@@ -535,27 +556,109 @@
 
   ({ home: renderHome, about: renderAbout, projects: renderProjects, project: renderProject }[page] || (() => {}))();
 
+  /* ---------- navigasi sub-kategori di halaman project ---------- */
+  const pdNav = $('#pdNav');
+  if (pdNav) {
+    const navLinks = $$('a', pdNav), secs = $$('.pd-section');
+    navLinks.forEach(a => a.addEventListener('click', e => {
+      e.preventDefault(); const t = $(a.getAttribute('href'));
+      scrollTo({ top: t.offsetTop - pdNav.offsetHeight - parseFloat(getComputedStyle(pdNav).top) - 10, behavior: 'smooth' });
+    }));
+    const navTop = () => pdNav.getBoundingClientRect().top;
+    addEventListener('scroll', () => {
+      pdNav.classList.toggle('stuck', navTop() <= parseFloat(getComputedStyle(pdNav).top) + 0.5);
+      let cur = -1; secs.forEach((s2, k) => { if (s2.getBoundingClientRect().top < innerHeight * .4) cur = k; });
+      navLinks.forEach((a, k) => a.classList.toggle('on', k === cur));
+      const on = navLinks[cur]; if (on && pdNav.classList.contains('stuck')) {
+        const w = $('.wrap', pdNav); const l = on.offsetLeft - w.clientWidth / 2 + on.clientWidth / 2;
+        if (Math.abs(w.scrollLeft - l) > 40) w.scrollTo({ left: l, behavior: 'smooth' });
+      }
+    }, { passive: true });
+  }
+
   /* ---------- reveal on scroll ---------- */
   const ro = new IntersectionObserver(es => es.forEach(en => {
     if (en.isIntersecting) { en.target.classList.add('in'); ro.unobserve(en.target); }
   }), { threshold: .12, rootMargin: '0px 0px -40px 0px' });
   $$('.reveal, .reveal-img, .line-mask').forEach(el => ro.observe(el));
 
-  /* ---------- lightbox (klik foto untuk memperbesar) ---------- */
-  document.body.insertAdjacentHTML('beforeend', '<div class="lightbox" id="lightbox"><img alt=""><p></p><button aria-label="Close">✕</button></div>');
-  const lbx = $('#lightbox');
+  /* ---------- galeri layar penuh (klik foto untuk memperbesar) ---------- */
+  document.body.insertAdjacentHTML('beforeend', `
+    <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+      <button class="lb-close" aria-label="Close">✕</button>
+      <button class="lb-nav prev" aria-label="Previous image">←</button>
+      <figure><img alt=""><figcaption><span class="lb-cap"></span><span class="lb-count"></span></figcaption></figure>
+      <button class="lb-nav next" aria-label="Next image">→</button>
+    </div>`);
+  const lbx = $('#lightbox'), lbImg = $('#lightbox img');
+  let lbList = [], lbIdx = 0;
+  const lbShow = i => {
+    lbIdx = (i + lbList.length) % lbList.length;
+    const im = lbList[lbIdx];
+    lbx.classList.add('swap');
+    setTimeout(() => {
+      lbImg.src = im.src; lbImg.alt = im.alt;
+      $('.lb-cap', lbx).textContent = im.alt;
+      $('.lb-count', lbx).textContent = `${lbIdx + 1} / ${lbList.length}`;
+      lbx.classList.remove('swap');
+    }, 160);
+    lbx.classList.toggle('single', lbList.length < 2);
+  };
+  const lbClose = () => lbx.classList.remove('open');
   document.addEventListener('click', e => {
     const img = e.target.closest('.zoomable img');
-    if (img) { lbx.querySelector('img').src = img.src; lbx.querySelector('p').textContent = img.alt; lbx.classList.add('open'); return; }
-    if (e.target.closest('#lightbox')) lbx.classList.remove('open');
+    if (img) { lbList = $$('.zoomable img'); lbx.classList.add('open'); lbShow(lbList.indexOf(img)); return; }
+    if (!lbx.classList.contains('open')) return;
+    if (e.target.closest('.lb-nav.prev')) return lbShow(lbIdx - 1);
+    if (e.target.closest('.lb-nav.next')) return lbShow(lbIdx + 1);
+    if (e.target.closest('.lb-close') || !e.target.closest('figure')) lbClose();
   });
-  document.addEventListener('keydown', e => e.key === 'Escape' && lbx.classList.remove('open'));
+  document.addEventListener('keydown', e => {
+    if (!lbx.classList.contains('open')) return;
+    if (e.key === 'Escape') lbClose();
+    if (e.key === 'ArrowRight') lbShow(lbIdx + 1);
+    if (e.key === 'ArrowLeft') lbShow(lbIdx - 1);
+  });
+  let sx = null;
+  lbx.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+  lbx.addEventListener('touchend', e => {
+    if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; sx = null;
+    if (Math.abs(dx) > 50) lbShow(lbIdx + (dx < 0 ? 1 : -1));
+  });
 
-  /* ---------- page transition (curtain) ---------- */
+  /* ---------- layar pembuka & transisi halaman ---------- */
   const curtain = $('#curtain');
-  const lift = () => { curtain.classList.add('show'); setTimeout(() => curtain.classList.add('up'), 650); };
-  if (sessionStorage.getItem('yuli-visited')) { curtain.querySelector('span').textContent = ''; setTimeout(() => curtain.classList.add('up'), 80); }
-  else { sessionStorage.setItem('yuli-visited', '1'); lift(); }
+  const ico = {
+    pen: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.6 7.6"/><circle cx="11" cy="11" r="2"/></svg>',
+    user: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></svg>',
+    image: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg>',
+    globe: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>'
+  };
+  let firstVisit = true;
+  try { firstVisit = !sessionStorage.getItem('yuli-visited'); sessionStorage.setItem('yuli-visited', '1'); } catch (e) {}
+  if (firstVisit) {
+    const site = location.hostname && location.hostname.includes('github.io') ? location.hostname : 'yulianisiti4702-lab.github.io';
+    curtain.classList.add('welcome-on');
+    curtain.innerHTML = `
+      <div class="welcome">
+        <div class="w-icons"><span>${ico.pen}</span><span>${ico.user}</span><span>${ico.image}</span></div>
+        <h1><span class="w-l"><span>Welcome</span></span> <span class="w-l"><span>to</span></span> <span class="w-l"><span>my</span></span><br>
+            <span class="w-l script"><span>Portfolio Website</span></span></h1>
+        <div class="w-url">${ico.globe}<b id="wurl"></b><i class="caret"></i></div>
+        <small class="w-skip">Click anywhere to enter</small>
+      </div>`;
+    requestAnimationFrame(() => curtain.classList.add('show'));
+    const urlEl = $('#wurl'); let k = 0;
+    const type = () => { urlEl.textContent = site.slice(0, ++k); if (k < site.length) setTimeout(type, 45); };
+    setTimeout(type, 1300);
+    let done = false;
+    const enter = () => { if (done) return; done = true; curtain.classList.add('up'); setTimeout(() => { curtain.classList.remove('welcome-on'); curtain.innerHTML = '<span></span>'; }, 900); };
+    const timer = setTimeout(enter, 1300 + site.length * 45 + 2200);
+    curtain.addEventListener('click', () => { clearTimeout(timer); enter(); });
+    document.addEventListener('keydown', function k1(e) { if (['Enter', ' ', 'Escape'].includes(e.key)) { clearTimeout(timer); enter(); document.removeEventListener('keydown', k1); } });
+  } else {
+    curtain.querySelector('span').textContent = ''; setTimeout(() => curtain.classList.add('up'), 80);
+  }
   window.addEventListener('pageshow', e => { if (e.persisted) curtain.className = 'curtain up'; });
 
   document.addEventListener('click', e => {
