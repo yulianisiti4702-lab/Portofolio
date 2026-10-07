@@ -700,11 +700,11 @@
       </div>`;
     requestAnimationFrame(() => curtain.classList.add('show'));
     const urlEl = $('#wurl'); let k = 0;
-    const type = () => { urlEl.textContent = site.slice(0, ++k); if (k < site.length) setTimeout(type, 45); };
-    setTimeout(type, 1300);
+    const type = () => { urlEl.textContent = site.slice(0, ++k); if (k < site.length) setTimeout(type, 25); };
+    setTimeout(type, 1000);
     let done = false;
     const enter = () => { if (done) return; done = true; curtain.classList.add('up'); setTimeout(() => { curtain.classList.remove('welcome-on'); curtain.innerHTML = '<span></span>'; }, 900); };
-    const timer = setTimeout(enter, 1300 + site.length * 45 + 2200);
+    const timer = setTimeout(enter, 3000); // layar Welcome hilang di detik ke-3
     curtain.addEventListener('click', () => { clearTimeout(timer); enter(); });
     document.addEventListener('keydown', function k1(e) { if (['Enter', ' ', 'Escape'].includes(e.key)) { clearTimeout(timer); enter(); document.removeEventListener('keydown', k1); } });
   } else {
