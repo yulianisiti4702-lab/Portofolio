@@ -581,3 +581,5 @@ img[data-parallax]{translate:0 var(--py,0px);scale:1.14;will-change:translate}
 
 /* sembunyikan kursor kustom saat galeri terbuka */
 body:has(.lightbox.open) .cursor,body:has(.lightbox.open) .cursor-dot{opacity:0!important}
+
+.sketch canvas{cursor:crosshair}

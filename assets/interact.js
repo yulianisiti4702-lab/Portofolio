@@ -1,6 +1,6 @@
 /* =========================================================
    INTERAKSI TAMBAHAN (tidak perlu diubah)
-   - kursor kustom, efek 3D & tombol magnet (khusus mouse)
+   - efek 3D & tombol magnet (khusus mouse)
    - progres scroll, parallax, teks berjalan mengikuti scroll
    - sketch pad di halaman About
    ========================================================= */
@@ -79,34 +79,6 @@
       el.style.translate = `${(dx * .25).toFixed(1)}px ${(dy * .35).toFixed(1)}px`;
     });
 
-    /* ---------- 5. kursor kustom ---------- */
-    document.documentElement.classList.add('has-cursor');
-    document.body.insertAdjacentHTML('beforeend', '<div class="cursor" aria-hidden="true"><span></span></div><div class="cursor-dot" aria-hidden="true"></div>');
-    const ring = $('.cursor'), dot = $('.cursor-dot'), label = $('.cursor span');
-    let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      dot.style.transform = `translate(${mx}px,${my}px)`;
-      const t = e.target;
-      const view = t.closest('a.sc-card, a.card, .pd-next a');
-      const zoom = t.closest('.zoomable');
-      const draw = t.closest('.sketch canvas');
-      const link = t.closest('a, button, label, .skill-tab, .vol-item');
-      const field = t.closest('input, textarea');
-      ring.className = 'cursor' + (view ? ' is-view' : zoom ? ' is-view' : draw ? ' is-draw' : field ? ' is-hidden' : link ? ' is-link' : '');
-      label.textContent = view ? 'View' : zoom ? 'Zoom' : '';
-      dot.classList.toggle('is-hidden', !!field || !!draw);
-    });
-    document.addEventListener('mousedown', () => ring.classList.add('down'));
-    document.addEventListener('mouseup', () => ring.classList.remove('down'));
-    document.addEventListener('mouseleave', () => { ring.style.opacity = 0; dot.style.opacity = 0; });
-    document.addEventListener('mouseenter', () => { ring.style.opacity = ''; dot.style.opacity = ''; });
-    const loop = () => {
-      rx += (mx - rx) * .18; ry += (my - ry) * .18;
-      ring.style.transform = `translate(${rx}px,${ry}px)`;
-      requestAnimationFrame(loop);
-    };
-    loop();
   }
 })();
 
