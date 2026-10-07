@@ -23,8 +23,8 @@
 
   /* ---------- header + menu ---------- */
   const links = [
-    ['Home', 'index.html', 'home'], ['About', 'about.html', 'about'],
-    ['Projects', 'projects.html', 'projects'], ['Contact', 'index.html#contact', 'contact']];
+    ['Home', 'index.html', 'home', 'Start here'], ['About', 'about.html', 'about', 'Story, experience & education'],
+    ['Projects', 'projects.html', 'projects', 'Selected works'], ['Contact', 'index.html#contact', 'contact', "Let's work together"]];
   document.body.insertAdjacentHTML('afterbegin', `
     <header class="top">
       <a href="index.html" class="logo">${PROFILE.nick}</a>
@@ -34,14 +34,19 @@
       </div>
     </header>
     <div class="menu" id="menu" aria-hidden="true">
-      <button class="close" id="closeMenu">Close ✕</button>
-      <nav>${links.map(([t, h, k], i) =>
-        `<a href="${h}" data-key="${k}" class="${k === page || (page === 'project' && k === 'projects') ? 'active' : ''}"><small>0${i + 1}</small>${t}</a>`).join('')}</nav>
-      <aside>
-        <span class="script">${PROFILE.nick}</span>
-        <p>${PROFILE.title}<br>${PROFILE.location}</p>
-        <p><a href="mailto:${PROFILE.email}">${PROFILE.email}</a></p>
-        <div class="socials">${socials()}</div>
+      <div class="menu-backdrop" data-close></div>
+      <aside class="menu-panel" role="dialog" aria-label="Menu">
+        <div class="mp-top">
+          <span class="script mp-logo">${PROFILE.nick}</span>
+          <button class="close" id="closeMenu" aria-label="Close menu"><span>Close</span><i aria-hidden="true"></i></button>
+        </div>
+        <nav>${links.map(([t, h, k, d], i) =>
+          `<a href="${h}" data-key="${k}" class="${k === page || (page === 'project' && k === 'projects') ? 'active' : ''}" style="--i:${i}"><small>0${i + 1}</small><span class="mp-label"><b>${t}</b><em>${d}</em></span><span class="mp-arrow" aria-hidden="true">→</span></a>`).join('')}</nav>
+        <div class="mp-foot">
+          <p>${PROFILE.title} · ${PROFILE.location}</p>
+          <a class="mp-mail" href="mailto:${PROFILE.email}">${PROFILE.email}</a>
+          <div class="socials">${socials()}</div>
+        </div>
       </aside>
     </div>`);
   const root = document.documentElement;
@@ -49,7 +54,11 @@
   const setTheme = t => { root.dataset.theme = t; try { localStorage.setItem('yuli-theme', t); } catch (e) {} };
   $('#themeToggle').onclick = () => setTheme(isDark() ? 'light' : 'dark');
   const menu = $('#menu');
-  const toggleMenu = open => { menu.classList.toggle('open', open); menu.setAttribute('aria-hidden', !open); };
+  const toggleMenu = open => {
+    menu.classList.toggle('open', open); menu.setAttribute('aria-hidden', !open);
+    document.documentElement.classList.toggle('menu-open', open);
+  };
+  menu.querySelector('[data-close]').onclick = () => toggleMenu(false);
   $('#openMenu').onclick = () => toggleMenu(true);
   $('#closeMenu').onclick = () => toggleMenu(false);
   document.addEventListener('keydown', e => e.key === 'Escape' && toggleMenu(false));

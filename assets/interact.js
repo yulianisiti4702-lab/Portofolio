@@ -139,9 +139,10 @@
     const out = document.createElement('canvas'); out.width = cv.width; out.height = cv.height;
     const o = out.getContext('2d'); o.fillStyle = css('--bg') || '#fff'; o.fillRect(0, 0, out.width, out.height);
     o.drawImage(cv, 0, 0);
-    const sig = Math.round(out.width / 22);
-    o.font = `${sig}px Handflair, cursive`; o.fillStyle = css('--fg'); o.textAlign = 'right';
-    o.fillText('drawn on yuli’s portfolio', out.width - sig * .8, out.height - sig * .8);
+    const sig = Math.round(out.width / 60);
+    o.font = `500 ${sig}px Montserrat, sans-serif`; o.fillStyle = '#9A9A9A'; o.textAlign = 'right';
+    if ('letterSpacing' in o) o.letterSpacing = `${(sig * .12).toFixed(1)}px`;
+    o.fillText('drawn on yuli’s portfolio', out.width - sig * 2, out.height - sig * 2);
     const a = document.createElement('a'); a.download = 'doodle-for-yuli.png'; a.href = out.toDataURL('image/png'); a.click();
   };
 })();
