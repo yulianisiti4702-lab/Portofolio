@@ -113,6 +113,25 @@ const ACHIEVEMENTS = [
     { title: "Jabar Future Leaders Scholarship", sub: "Full undergraduate scholarship, West Java Provincial Government", date: "2020" } ] }
 ];
 
+// "the brands along the journey" di halaman depan.
+// style: gaya huruf (bold / light / script / spaced / heavy / round). link boleh kosong.
+const BRANDS = [
+  { name: "Shoe Police", style: "bold", role: "Graphic Designer", year: "2026", link: "project.html?id=shoe-police" },
+  { name: "Shoe Workshop", style: "light", role: "Graphic Designer", year: "2026", link: "project.html?id=shoe-police" },
+  { name: "Kulturama", style: "script", role: "Graphic Designer · PT. Kulturama Virtua Solusindo", year: "2026", link: "" },
+  { name: "seis", style: "spaced", role: "Product Photographer & Graphic Designer", year: "2025", link: "project.html?id=seis" },
+  { name: "Mizan", style: "heavy", role: "Illustrator Intern & Freelance Designer", year: "2023 – 2025", link: "project.html?id=book-illustration" },
+  { name: "DAR!", style: "round", role: "Freelance Graphic Designer", year: "2024 – 2025", link: "project.html?id=dar-mizan" },
+  { name: "KKPK", style: "bold", role: "Freelance Graphic Designer", year: "2024 – 2025", link: "project.html?id=kkpk" },
+  { name: "YMKI", style: "light", role: "Volunteer Graphic Designer", year: "2024", link: "project.html?id=ymki" },
+  { name: "MyEduSolve", style: "script", role: "Winner, Design Challenge", year: "2024", link: "" },
+  { name: "BISA AI", style: "spaced", role: "MSIB Independent Study · UI/UX", year: "2023", link: "about.html#edu-msib" },
+  { name: "UPI", style: "heavy", role: "Visual Communication Design, GPA 3.92", year: "2020 – 2024", link: "about.html#edu-upi" },
+  { name: "JFLS", style: "round", role: "Designer & Field Coordinator", year: "2022 – 2023", link: "" },
+  { name: "Rema Berdaya", style: "script", role: "Graphic Designer", year: "2022", link: "" },
+  { name: "HIKAVI", style: "light", role: "General Secretary", year: "2021 – 2022", link: "" }
+];
+
 // Kartu sertifikat di "Portfolio Showcase" halaman depan.
 // img kosong = kartu teks saja (dipakai untuk dokumen yang memuat data pribadi).
 const CERTIFICATES = [
@@ -147,7 +166,7 @@ const CATEGORIES = [
 ];
 
 const PROJECTS = [
- { id: "shoe-police", cat: "brand", title: "Shoe Police", year: "2026",
+ { id: "shoe-police", stats: [["60+", "Instagram carousels / month"], ["20+", "Long-form thumbnails / month"], ["50+", "Short-form thumbnails / month"]], cat: "brand", title: "Shoe Police", year: "2026",
    short: "Scroll-stopping carousels and YouTube thumbnails for a sneaker-culture media brand.",
    intro: "Shoe Police is a media company focused on sneaker culture, covering the latest footwear trends, product recommendations, and industry insights. As part of the content team, I create visual assets that turn trend-driven topics into scroll-stopping social media content.",
    meta: ["Graphic Designer", "Full-time", "Apr 2026 – Present"],
@@ -161,7 +180,7 @@ const PROJECTS = [
    tags: ["Instagram Carousel", "YouTube Thumbnail", "Video Editing"], tools: [],
    gallery: [{ label: "Mockup HP", src: "" }, { label: "Carousel", src: "" }, { label: "Thumbnail YouTube", src: "" }, { label: "Video", src: "" }] },
 
- { id: "dar-mizan", cat: "brand", title: "DAR! Mizan", year: "2024 – 2025",
+ { id: "dar-mizan", stats: [["15+", "Instagram feeds / month"], ["1", "Bonus activity sheet"]], cat: "brand", title: "DAR! Mizan", year: "2024 – 2025",
    short: "Bright, toddler-friendly promotional visuals for flagship children's book series.",
    intro: "DAR! Mizan is a children's book publisher for early readers, known for colorful, educational, and kid-friendly board books. I designed promotional visuals for several of its flagship series, including Halo Balita (good habits and early character-building) and Juz Amma for Kids (Qur'an learning for children), as well as other preschool titles.",
    meta: ["Graphic Designer", "Freelance", "Nov 2024 – Feb 2025"],
@@ -187,7 +206,7 @@ const PROJECTS = [
    ],
  },
 
- { id: "kkpk", cat: "brand", title: "KKPK", year: "2024 – 2025",
+ { id: "kkpk", stats: [["15+", "Instagram feeds / month"]], cat: "brand", title: "KKPK", year: "2024 – 2025",
    short: "Colorful, kid-friendly content promoting a beloved book series by young authors.",
    intro: "KKPK (Kecil-Kecil Punya Karya) is a beloved children's book series under DAR! Mizan, written by young authors for young readers, with stories full of imagination, friendship, and adventure. I created colorful, kid-friendly visual content to promote each new title to its core audience of elementary school children.",
    meta: ["Graphic Designer", "Freelance", "Nov 2024 – Feb 2025"],
@@ -213,7 +232,7 @@ const PROJECTS = [
    ],
  },
 
- { id: "seis", cat: "product", featured: true, title: "SEIS Official Shop", year: "2025",
+ { id: "seis", stats: [["24", "Shots per new product"], ["30", "Ad photos / month"], ["12", "Marketplace banners / month"], ["45", "Instagram post options / month"]], cat: "product", featured: true, title: "SEIS Official Shop", year: "2025",
    short: "Full visual catalogs, banners, and ad photography for a local footwear brand.",
    intro: "SEIS Official Shop is a local online footwear brand offering everything from heels, mules, and sandals to loafers and sneakers. As product photographer and graphic designer, I produced the full visual catalog for every new release and periodic reshoot, making sure each product was presented with a consistent, marketplace-ready look.",
    meta: ["Product Photographer & Graphic Designer", "Full-time", "Apr 2025 – Nov 2025"],
@@ -230,7 +249,7 @@ const PROJECTS = [
    thumb: "assets/images/seis/ads-venice.jpg",
    gallery: [{ label: "Venice ad", src: "assets/images/seis/ads-venice.jpg" }, { label: "Meredith Instagram post", src: "assets/images/seis/ig-meredith.jpg" }, { label: "Top 5 Best Seller banner", src: "assets/images/seis/banner-top5.jpg" }],
    sections: [
-     { title: "Ad Photography", layout: "scroll",
+     { title: "Ad Photography", layout: "fan",
        desc: "Photos created specifically for paid ads, each built on the same layout system: one hero product, a serif product name, a short tagline, and plenty of white space so the shoe stands out in a fast-scrolling feed. I delivered 30 ad photos every month to support ongoing campaigns.",
        // Disusun per jenis sepatu. Tambah foto baru: taruh file di assets/images/seis/, lalu tulis ["nama-file", "Keterangan"] di grup yang sesuai.
        groups: [
@@ -242,7 +261,7 @@ const PROJECTS = [
          { label: "Loafers", images: [["ads-clover", "Clover"], ["ads-vici", "Vici"], ["promo-wallet-thank-you", "Your Wallet Will Thank You"]] },
          { label: "Sneakers", images: [["ads-phoenix", "Phoenix"], ["promo-more-you-buy", "The More You Buy, The More You Save"], ["promo-shop-smart", "Shop Smart, Spend Less"]] }
        ] },
-     { title: "Instagram Campaign Series", layout: "scroll",
+     { title: "Instagram Campaign Series", layout: "fan",
        desc: "Two visual series for the brand's Instagram feed. The Maroon series uses a deep red backdrop to make each product feel bold and premium, while the Light Editorial series pairs soft grey backgrounds with playful hand and leg poses for a magazine-like look. Building posts as series keeps the feed cohesive while every product still gets its own moment.",
        images: [["ig-meredith", "Maroon series — Meredith"], ["ig-meredith-set", "Maroon series — Meredith collection"], ["ig-wilona-red", "Maroon series — Wilona"], ["ig-mercy", "Light Editorial — Celeste"], ["ig-wilona", "Light Editorial — Wilona"], ["ig-valencia", "Light Editorial — Valencia"]] },
      { title: "Marketplace Banners & Campaigns", layout: "scroll",
@@ -251,21 +270,25 @@ const PROJECTS = [
      { title: "Collection Banners", layout: "scroll",
        desc: "A banner set for each product category in the store. One shared layout, typography, and color treatment ties every collection together, so shoppers can move between categories and still feel they're in the same store.",
        images: [["collection-sandals", "Sandals Collection"], ["collection-docmart", "Docmart Collection"], ["collection-mules", "Mules Collection"]] },
-     { title: "Product Shots — Single Color", layout: "scroll",
-       desc: "One product, one color per frame. Clean solo shots that let shoppers check the silhouette, material, and details of each color variant before they choose.",
-       images: [["pp-val-1", "Valencia — Cream"], ["pp-val-2", "Valencia — Brown"], ["pp-val-3", "Valencia — Black"], ["pp-gre-1", "Greisy — Black"], ["pp-osw-1", "Oswald — Cream"], ["product-1", "Clovis — styled shot"], ["product-3", "Pixie — styled shot"], ["product-4", "Pixie — top view"]] },
-     { title: "Product Shots — All Colors", layout: "scroll",
-       desc: "Every color variant of a product arranged in a single frame, so shoppers can compare the whole range at a glance and pick their favorite faster.",
-       images: [["pp-val-10", "Valencia — all colors"], ["pp-val-11", "Valencia — all colors"], ["pp-val-12", "Valencia — all colors"], ["pp-gre-10", "Greisy — all colors"], ["pp-osw-10", "Oswald — all colors"]] },
-     { title: "On-Model Shots — Single Color", layout: "scroll",
-       desc: "Each color worn by a model, showing the real fit, proportion, and heel height, and how the shoe looks in everyday wear.",
-       images: [["pp-val-13", "Valencia — Black on model"], ["pp-val-14", "Valencia — Cream on model"], ["pp-val-15", "Valencia — Brown on model"], ["pp-gre-13", "Greisy — Cream on model"], ["pp-osw-13", "Oswald — Cream on model"], ["model-1", "Clovis on model"], ["model-2", "Pixie on model"], ["model-3", "Styled with lace socks"], ["model-4", "Denver flats"]] },
-     { title: "On-Model Shots — All Colors", layout: "scroll",
-       desc: "All color variants styled together with a model, giving shoppers a quick sense of the full collection in a real-life setting.",
-       images: [["pp-val-22", "Valencia — all colors on model"], ["pp-val-23", "Valencia — all colors on model"], ["pp-val-24", "Valencia — all colors on model"], ["pp-gre-22", "Greisy — all colors on model"], ["pp-osw-22", "Oswald — all colors on model"]] },
-     { title: "Zalora Catalog Shots", layout: "scroll",
-       desc: "Standardized catalog photos made to Zalora's marketplace guidelines: a plain white background, no logo, and fixed top and front angles for every color variant.",
-       images: [["pp-val-atas-cream", "Valencia — Cream, top view"], ["pp-val-depan-black", "Valencia — Black, front view"], ["pp-gre-atas-black", "Greisy — Black, top view"], ["pp-osw-atas-maroon", "Oswald — Maroon, top view"]] },
+     { title: "Product Photography", layout: "scroll",
+       desc: "Every new release gets a complete marketplace photo set for each color variant, from clean solo shots to on-model shots and catalog photos made to each marketplace's guidelines.",
+       subs: [
+         { title: "Product Shots — Single Color",
+           desc: "One product, one color per frame. Clean solo shots that let shoppers check the silhouette, material, and details of each color variant before they choose.",
+           images: [["pp-val-1", "Valencia — Cream"], ["pp-val-2", "Valencia — Brown"], ["pp-val-3", "Valencia — Black"], ["pp-gre-1", "Greisy — Black"], ["pp-osw-1", "Oswald — Cream"], ["product-1", "Clovis — styled shot"], ["product-3", "Pixie — styled shot"], ["product-4", "Pixie — top view"]] },
+         { title: "Product Shots — All Colors",
+           desc: "Every color variant of a product arranged in a single frame, so shoppers can compare the whole range at a glance and pick their favorite faster.",
+           images: [["pp-val-10", "Valencia — all colors"], ["pp-val-11", "Valencia — all colors"], ["pp-val-12", "Valencia — all colors"], ["pp-gre-10", "Greisy — all colors"], ["pp-osw-10", "Oswald — all colors"]] },
+         { title: "On-Model Shots — Single Color",
+           desc: "Each color worn by a model, showing the real fit, proportion, and heel height, and how the shoe looks in everyday wear.",
+           images: [["pp-val-13", "Valencia — Black on model"], ["pp-val-14", "Valencia — Cream on model"], ["pp-val-15", "Valencia — Brown on model"], ["pp-gre-13", "Greisy — Cream on model"], ["pp-osw-13", "Oswald — Cream on model"], ["model-1", "Clovis on model"], ["model-2", "Pixie on model"], ["model-3", "Styled with lace socks"], ["model-4", "Denver flats"]] },
+         { title: "On-Model Shots — All Colors",
+           desc: "All color variants styled together with a model, giving shoppers a quick sense of the full collection in a real-life setting.",
+           images: [["pp-val-22", "Valencia — all colors on model"], ["pp-val-23", "Valencia — all colors on model"], ["pp-val-24", "Valencia — all colors on model"], ["pp-gre-22", "Greisy — all colors on model"], ["pp-osw-22", "Oswald — all colors on model"]] },
+         { title: "Zalora Catalog Shots",
+           desc: "Standardized catalog photos made to Zalora's marketplace guidelines: a plain white background, no logo, and fixed top and front angles for every color variant.",
+           images: [["pp-val-atas-cream", "Valencia — Cream, top view"], ["pp-val-depan-black", "Valencia — Black, front view"], ["pp-gre-atas-black", "Greisy — Black, top view"], ["pp-osw-atas-maroon", "Oswald — Maroon, top view"]] }
+       ] },
      { title: "TikTok Covers", layout: "scroll",
        desc: "Video covers for TikTok campaigns, designed to communicate the offer at a glance while keeping the product as the hero.",
        images: [["tiktok-1", "9.9 Super Shopping Sale"], ["tiktok-2", "9.9 Super Shopping Sale — model version"]] }
@@ -293,7 +316,7 @@ const PROJECTS = [
        images: [["hari-perempuan", "International Women's Day"]] }
    ] },
 
- { id: "book-illustration", cat: "editorial", title: "Book Illustration — Mizan Pustaka", year: "2023 – 2024",
+ { id: "book-illustration", stats: [["7", "Book titles illustrated"], ["2", "Catalog editions"], ["95.5", "Art Director evaluation"]], cat: "editorial", title: "Book Illustration — Mizan Pustaka", year: "2023 – 2024",
    short: "Realistic pencil illustrations for 7 book titles and KKPK digital catalogs.",
    intro: "A 4-month internship in the Artistic division of PT. Mizan Pustaka, a Bandung-based publishing house. The work covered two tracks: designing digital product catalogs and illustrating editorial content for books released in 2023–2024.",
    meta: ["Illustrator Intern", "Internship", "Sep 2023 – Jan 2024"],
@@ -325,7 +348,7 @@ const PROJECTS = [
    ],
  },
 
- { id: "ar-book", cat: "editorial", title: "Mengenal Waditra Sunda", year: "2024",
+ { id: "ar-book", stats: [["52", "Pages"], ["16", "Traditional instruments"], ["25", "Students tested"]], cat: "editorial", title: "Mengenal Waditra Sunda", year: "2024",
    short: "An illustrated children's book that comes alive in AR, introducing 16 Sundanese instruments.",
    intro: "My undergraduate thesis project, exploring where illustration, book design, and technology meet. “Mengenal Waditra Sunda” is a printed children's book paired with an AR mobile app that introduces 16 traditional Sundanese musical instruments to elementary school readers through illustrations, 3D models, and interactive audio.",
    meta: ["Illustrator, Book Designer & AR Developer", "Undergraduate Thesis"],
@@ -360,7 +383,7 @@ const PROJECTS = [
    ],
  },
 
- { id: "tongkat-ajaib", cat: "editorial", title: "Tongkat Ajaib", year: "2023",
+ { id: "tongkat-ajaib", stats: [["8", "Illustrated pages"], ["2023", "Copyright registered"]], cat: "editorial", title: "Tongkat Ajaib", year: "2023",
    short: "A copyrighted fantasy storybook about kindness, written and illustrated from scratch.",
    intro: "A fantasy storybook created as the final project for a Digital Illustration course, aimed at early elementary readers (ages 6–10). “Tongkat Ajaib” follows Tia, a young girl who chooses to care for her sick mother instead of playing with her friends, and is rewarded with a magic wand for her devotion. The story carries a moral message about devotion and kindness toward parents.",
    meta: ["Writer & Illustrator", "Course Project"],
@@ -374,7 +397,7 @@ const PROJECTS = [
    tags: ["Children's Book", "Character Design", "Storytelling"], tools: [],
    gallery: [{ label: "Cover buku", src: "" }, { label: "Mockup isi buku", src: "" }, { label: "Karakter", src: "" }] },
 
- { id: "wind-blow", cat: "personal", title: "Wind Blow", year: "",
+ { id: "wind-blow", stats: [["6", "Characters designed"]], cat: "personal", title: "Wind Blow", year: "",
    short: "A supernatural drama comic built from world-building to finished pages.",
    intro: "A solo comic created as the final project for a Comic course, covering the full production pipeline from world-building and character design to finished comic pages. “Wind Blow” follows Nala, a young painter chasing an international art award with the help of a mysterious imaginary friend, in a supernatural drama about grief, ambition, and letting go.",
    meta: ["Writer & Comic Artist", "Course Project"],
