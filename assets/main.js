@@ -631,7 +631,7 @@
           ${s.subs ? s.subs.map((u, n) => `
             <div class="pd-sub reveal">
               <div class="pd-sub-head"><span>${String(k + 1).padStart(2, '0')}.${n + 1}</span><div><h3>${u.title}</h3><p>${u.desc}</p></div></div>
-              ${hScroll(u, p)}
+              ${u.layout === 'scroll' ? hScroll(u, p) : fanHTML(u, p)}
             </div>`).join('') : s.layout === 'fan' ? fanHTML(s, p) : s.layout === 'scroll' ? hScroll(s, p) : `<div class="pd-grid ${s.layout || 'grid-2'}">${s.images.map(([f, l]) =>
             `<figure class="reveal-img">${media((p.imgBase || '') + f + '.jpg', l, 'zoomable')}<figcaption>${l}</figcaption></figure>`).join('')}</div>`}
         </div>
@@ -755,7 +755,20 @@
   /* ---------- galeri kipas 3D ---------- */
   $$('.fan').forEach(fan => {
     const cards = $$('.fan-card', fan), n = cards.length; let cur = 0;
+    const st0 = $('.fan-stage', fan);
+    // semua foto muat dalam kotak yang sama (portrait, kotak, atau banner lebar) tanpa terpotong
+    const fit = () => {
+      const w = fan.clientWidth, mob = w < 640;
+      const bh = mob ? 256 : Math.max(285, Math.min(500, w * .4)), bw = mob ? w * .8 : Math.min(w * .62, 780);
+      let mx = 0;
+      cards.forEach(c => { const im = $('img', c); if (!im || !im.naturalWidth) return;
+        const r = im.naturalWidth / im.naturalHeight, h = Math.min(bh, bw / r);
+        im.style.height = h + 'px'; im.style.width = h * r + 'px'; mx = Math.max(mx, h); });
+      if (mx) st0.style.height = (mx + (mob ? 14 : 20)) + 'px';
+    };
+    $$('img', fan).forEach(im => { if (!im.complete) im.addEventListener('load', fit); });
     const lay = () => {
+      fit();
       const w = fan.clientWidth, sp = Math.min(w * .17, 230);
       cards.forEach((c, k) => {
         let d = k - cur; if (d > n / 2) d -= n; if (d < -n / 2) d += n;
