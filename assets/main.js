@@ -605,7 +605,7 @@
     const hScroll = (s, p) => {
       // groups hanya dipakai untuk urutan (per jenis sepatu); tampilannya satu baris foto tanpa label
       const imgs = s.groups ? s.groups.flatMap(g => g.images) : s.images;
-      const fig = ([f, l]) => `<figure>${media((p.imgBase || '') + f + '.jpg', l, 'zoomable').replace('loading="lazy"', 'decoding="async"')}<figcaption>${l}</figcaption></figure>`;
+      const fig = ([f, l]) => `<figure>${media((p.imgBase || '') + f + (f.includes('.') ? '' : '.jpg'), l, 'zoomable').replace('loading="lazy"', 'decoding="async"')}<figcaption>${l}</figcaption></figure>`;
       return `<div class="hs reveal">
         <div class="hs-track" tabindex="0" aria-label="${s.title} — scroll sideways">${imgs.map(fig).join('')}</div>
         <div class="hs-ctrl"><button type="button" class="hs-btn prev" aria-label="Scroll left">←</button><div class="hs-bar"><i></i></div><span class="hs-count">${imgs.length} images</span><button type="button" class="hs-btn next" aria-label="Scroll right">→</button></div>
@@ -616,7 +616,7 @@
     const fanHTML = (s, p) => {
       const imgs = s.groups ? s.groups.flatMap(g => g.images) : s.images;
       return `<div class="fan reveal" tabindex="0" aria-label="${s.title} — use arrow keys">
-        <div class="fan-stage">${imgs.map(([f, l], n) => `<figure class="fan-card" data-n="${n}">${media((p.imgBase || '') + f + '.jpg', l, 'zoomable').replace('loading="lazy"', 'decoding="async"')}</figure>`).join('')}</div>
+        <div class="fan-stage">${imgs.map(([f, l], n) => `<figure class="fan-card${f.endsWith('.webp') ? ' cut' : ''}" data-n="${n}">${media((p.imgBase || '') + f + (f.includes('.') ? '' : '.jpg'), l, 'zoomable').replace('loading="lazy"', 'decoding="async"')}</figure>`).join('')}</div>
         <div class="fan-ctrl"><button type="button" class="hs-btn fan-prev" aria-label="Previous">←</button><div class="fan-info"><b class="fan-cap"></b><span class="fan-count"></span></div><button type="button" class="hs-btn fan-next" aria-label="Next">→</button></div>
       </div>`;
     };
@@ -633,7 +633,7 @@
               <div class="pd-sub-head"><span>${String(k + 1).padStart(2, '0')}.${n + 1}</span><div><h3>${u.title}</h3><p>${u.desc}</p></div></div>
               ${u.layout === 'scroll' ? hScroll(u, p) : fanHTML(u, p)}
             </div>`).join('') : s.layout === 'fan' ? fanHTML(s, p) : s.layout === 'scroll' ? hScroll(s, p) : `<div class="pd-grid ${s.layout || 'grid-2'}">${s.images.map(([f, l]) =>
-            `<figure class="reveal-img">${media((p.imgBase || '') + f + '.jpg', l, 'zoomable')}<figcaption>${l}</figcaption></figure>`).join('')}</div>`}
+            `<figure class="reveal-img">${media((p.imgBase || '') + f + (f.includes('.') ? '' : '.jpg'), l, 'zoomable')}<figcaption>${l}</figcaption></figure>`).join('')}</div>`}
         </div>
       </section>`).join('');
 

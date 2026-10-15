@@ -706,15 +706,15 @@ html.menu-open,html.menu-open body{overflow:hidden}
 .pf-stage{--gx:50%;position:relative;width:100%;height:min(62vh,640px);min-height:340px}
 .pf-word{position:absolute;line-height:.8;white-space:nowrap;will-change:transform;pointer-events:none}
 .pf-word span{display:inline-block;background:var(--grad);background-size:260% 100%;background-position:var(--gx) 50%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;opacity:0;transition:opacity 1.2s var(--ease),transform 1.4s var(--ease)}
-.pf-port{right:-1vw;top:2%;font-size:clamp(120px,24vw,400px);font-weight:300;letter-spacing:-.06em}
-.pf-port span{transform:translateX(18%)}
-.pf-folio{left:-2vw;bottom:-6%;font-family:var(--script);font-size:clamp(150px,29vw,500px);padding:0 .2em .1em}
-.pf-folio span{padding:.05em .25em .12em;transform:translateX(-18%)}
+.pf-port{left:-1vw;top:0;font-size:clamp(120px,24vw,400px);font-weight:300;letter-spacing:-.06em}
+.pf-port span{transform:translateX(-18%)}
+.pf-folio{right:-2vw;bottom:10%;font-family:var(--script);font-size:clamp(150px,29vw,500px);padding:0 .2em .1em}
+.pf-folio span{padding:.05em .25em .12em;transform:translateX(18%)}
 .panel.active .pf-word span,.pf-hero.active .pf-word span{opacity:1;transform:none}
 .pf-meta{position:absolute;display:flex;flex-direction:column;font-size:12px;line-height:1.5;color:var(--d-text2);opacity:0;transition:opacity 1s .6s}
 .pf-meta em{font-style:italic;color:var(--d-mute)}
-.pf-m1{left:54%;top:56%}
-.pf-m2{left:76%;top:56%}
+.pf-m1{left:52%;bottom:0}
+.pf-m2{left:76%;bottom:0}
 .pf-hero.active .pf-meta{opacity:1}
 .pf-bottom{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;margin-top:24px;width:100%}
 .pf-role{font-size:12px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--d-text2);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
@@ -724,8 +724,8 @@ html.menu-open,html.menu-open body{overflow:hidden}
 @media (max-width:760px){
   .pf-hero{padding:90px 0 40px}
   .pf-stage{height:44vh;min-height:280px}
-  .pf-port{top:0;right:-5vw;font-size:38vw}
-  .pf-folio{bottom:0;left:-4vw;font-size:46vw}
+  .pf-port{top:0;left:-3vw;font-size:38vw}
+  .pf-folio{bottom:0;right:-4vw;font-size:46vw}
   .pf-meta{display:none}
   .pf-hero~.scroll-hint,.pf-hero .scroll-hint{display:none}
 }
@@ -858,6 +858,9 @@ html.menu-open,html.menu-open body{overflow:hidden}
 .fan-stage{position:relative;height:clamp(300px,42vw,520px);perspective:1600px;display:flex;align-items:center;justify-content:center;touch-action:pan-y;user-select:none}
 .fan-card{position:absolute;margin:0;height:auto;width:auto;border-radius:18px;overflow:hidden;background:var(--media-bg);box-shadow:0 30px 60px rgba(0,0,0,.25);transition:transform .7s var(--ease),opacity .5s,box-shadow .5s;cursor:pointer;transform-style:preserve-3d}
 .fan-card.on{box-shadow:0 40px 80px rgba(0,0,0,.35)}
+.fan-card.cut,.fan-card.cut .media{background:none;box-shadow:none;border-radius:0;overflow:visible}
+.fan-card.cut .media img{filter:drop-shadow(0 24px 30px rgba(0,0,0,.28))}
+.fan-card.cut:not(.on) .media img{filter:drop-shadow(0 24px 30px rgba(0,0,0,.28)) grayscale(.35) brightness(.9)}
 .fan-card .media img{display:block;height:clamp(285px,40vw,500px);width:auto;max-width:none;-webkit-user-drag:none}
 .fan-card:not(.on) .media img{filter:grayscale(.35) brightness(.9);transition:filter .5s}
 .fan-ctrl{display:flex;align-items:center;justify-content:center;gap:26px;margin-top:30px}
