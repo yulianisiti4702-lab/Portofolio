@@ -258,7 +258,7 @@ const PROJECTS = [
            images: [["feed-terbit-neighbors", "Out now: The Neighbor's Secret"], ["feed-terbit-new-york", "Out now: New Year in New York"], ["feed-collection-1", "Complete the collection"], ["feed-collection-2", "Complete the collection — alternate"], ["feed-top-10", "Top 10 KKPK December"]] },
          { title: "Mini Games & Interactive Posts",
            desc: "Weekly #KamisInggris posts and comic quizzes that invite kids to practise English and comment with their answers.",
-           images: [["neighbors-secret", "The Neighbor's Secret — fill in the dialogue"], ["feed-kamis-inggris-1", "#KamisInggris — fill in the blank"], ["feed-kamis-inggris-2", "#KamisInggris — quiz"], ["feed-scrabble-1", "#KamisInggris — Scrabble time"], ["feed-scrabble-2", "#KamisInggris — word puzzle"], ["quiz", "KKPK & DAR! book quiz"]] },
+           images: [["neighbors-secret", "The Neighbor's Secret — fill in the dialogue"], ["feed-kamis-inggris-1", "#KamisInggris — fill in the blank"], ["feed-kamis-inggris-2", "#KamisInggris — quiz"], ["feed-scrabble-1", "#KamisInggris — Scrabble time"], ["feed-scrabble-2", "#KamisInggris — word puzzle"]] },
          { title: "Campaigns",
            desc: "Posts for KKPK's reader programs, including the Pena Sahabat review challenge and the English Short Story Competition.",
            images: [["pena-sahabat", "Pena Sahabat review challenge"], ["feed-english-competition", "English Short Story Competition"]] }
@@ -298,7 +298,7 @@ const PROJECTS = [
    imgBase: "assets/images/seis/",
    cover: { label: "Clovis Payday Instagram post", src: "assets/images/seis/ig2-clovis.jpg" },
    thumb: "assets/images/seis/ig2-meredith.jpg",
-   gallery: [{ label: "Venice ad", src: "assets/images/seis/ads-venice.jpg" }, { label: "Meredith Instagram post", src: "assets/images/seis/ig2-meredith.jpg" }, { label: "Top 5 Best Seller banner", src: "assets/images/seis/banner-top5.jpg" }],
+   gallery: [{ label: "Greisy slingbacks in three colors", src: "assets/images/seis/hero-greisy.jpg" }, { label: "Meredith Instagram post", src: "assets/images/seis/ig2-meredith.jpg" }, { label: "Top 5 Best Seller banner", src: "assets/images/seis/banner-top5.jpg" }],
    sections: [
      { title: "Ad Photography", layout: "fan",
        desc: "Photos created specifically for paid ads, each built on the same layout system: one hero product, a serif product name, a short tagline, and plenty of white space so the shoe stands out in a fast-scrolling feed. I delivered 30 ad photos every month to support ongoing campaigns.",
