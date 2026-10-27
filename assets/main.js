@@ -638,6 +638,171 @@
       </section>`).join('');
 
     const nn = String(i + 1).padStart(2, '0');
+    const IMG = f => (p.imgBase || '') + f + (f.includes('.') ? '' : '.jpg');
+    const view = new URLSearchParams(location.search).get('view');
+    let chN = 0;
+    const chHead = (title, sub) => `<header class="wb-ch reveal"><span class="wb-ch-n">Chapter ${String(++chN).padStart(2, '0')}</span><h2>${title}</h2>${sub ? `<p>${sub}</p>` : ''}</header>`;
+    const fig = ([f, l], cls = '') => `<figure class="wb-fig ${cls}">${media(IMG(f), l, 'zoomable')}<figcaption>${l}</figcaption></figure>`;
+
+    if (view === 'testing' && p.testing) { renderTesting(); return; }
+
+    function storyHTML() {
+      const s = p.story, b = s.background, r = s.research;
+      return `
+    <section class="sec wb wb-story">
+      <div class="wrap">
+        ${chHead('From <span class="script">problem</span> to plan', 'Why the book was made, and how the research and design were planned.')}
+        <div class="wb-bg">
+          ${fig(b.img, 'reveal')}
+          <div class="reveal">
+            <h3 class="wb-h">Background</h3>
+            ${b.text.map(x => `<p>${x}</p>`).join('')}
+            <div class="wb-facts">${b.facts.map(([n, l]) => `<div><b data-num="${n}">${n}</b><small>${l}</small></div>`).join('')}</div>
+          </div>
+        </div>
+        <div class="wb-ps reveal">
+          <div><h3 class="wb-h">Problems</h3><ol class="wb-list">${s.problems.map(x => `<li>${x}</li>`).join('')}</ol></div>
+          <div class="wb-arrow" aria-hidden="true">→</div>
+          <div class="wb-sol"><h3 class="wb-h">Solution</h3><p>${s.solution}</p></div>
+        </div>
+        <div class="wb-block reveal">
+          <h3 class="wb-h">Design goals</h3>
+          <div class="wb-goals">${s.goals.map(([g, d]) => `<div><b>${g}</b><p>${d}</p></div>`).join('')}</div>
+        </div>
+        <div class="wb-block reveal">
+          <h3 class="wb-h">Research method <span class="wb-tag">${r.approach} approach</span></h3>
+          <div class="wb-research">
+            <div>
+              <small class="wb-lbl">Data collection</small>
+              <div class="wb-chips">${r.collect.map(x => `<span>${x}</span>`).join('')}</div>
+              ${fig(r.img)}
+            </div>
+            <div>
+              <small class="wb-lbl">Data processing</small>
+              <ol class="wb-flow">${r.process.map(x => `<li>${x}</li>`).join('')}</ol>
+            </div>
+          </div>
+        </div>
+        <div class="wb-block reveal">
+          <h3 class="wb-h">Design method <span class="wb-tag">Design Thinking</span></h3>
+          <ol class="wb-steps">${s.method.map(([m, d]) => `<li><b>${m}</b><p>${d}</p></li>`).join('')}</ol>
+        </div>
+        ${p.process ? `<div class="wb-cta reveal"><a class="btn" href="project.html?id=${p.id}&view=process">See the full design process →</a></div>` : ''}
+      </div>
+    </section>`;
+    }
+
+    function outcomeHTML() {
+      const o = p.outcome;
+      const prod = x => `
+        <div class="wb-prod reveal">
+          <div class="wb-prod-media">${x.img.map(im => fig(im)).join('')}</div>
+          <div>
+            <h3>${x.title}</h3>
+            <p>${x.desc}</p>
+            <dl class="wb-specs">${x.specs.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+          </div>
+        </div>`;
+      return `
+    <section class="sec wb wb-out">
+      <div class="wrap">
+        ${chHead('The <span class="script">result</span>', 'A printed book and an AR app that work together, tested with experts and students.')}
+        ${prod(o.book)}${prod(o.app)}
+        <div class="wb-block reveal">
+          <h3 class="wb-h">Testing at a glance</h3>
+          <div class="wb-tests">${o.tests.map(([k, v, d]) => `<div><small>${k}</small><b>${v}</b><p>${d}</p></div>`).join('')}</div>
+        </div>
+        ${p.testing ? `<div class="wb-cta reveal"><a class="btn" href="project.html?id=${p.id}&view=testing">See the full test results →</a></div>` : ''}
+      </div>
+    </section>`;
+    }
+
+    function renderTesting() {
+      const T = p.testing;
+      document.title = `Testing & Evaluation — ${p.title} | ${PROFILE.name}`;
+      const head = (n, title, desc) => `<div class="pd-sec-head reveal"><span class="num">${n}</span><div><h2>${title}</h2>${desc ? `<p>${desc}</p>` : ''}</div></div>`;
+      const ok = '<span class="wb-ok">✓ Passed</span>';
+      const chart = e => `
+        <div class="wb-legend"><span><i class="a"></i>${e.who[0][0]}</span><span><i class="b"></i>${e.who[1][0]}</span></div>
+        <div class="wb-chart" role="table" aria-label="${e.title} scores, out of 5">
+          ${e.scores.map(([l, a, b]) => `<div class="wb-row" role="row"><span role="cell">${l}</span><div class="wb-bars" role="cell"><i class="a" style="--v:${a / 5}"><b>${a}</b></i><i class="b" style="--v:${b / 5}"><b>${b}</b></i></div></div>`).join('')}
+          <div class="wb-scale" aria-hidden="true"><span></span><div><i>0</i><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i></div></div>
+        </div>`;
+      app.innerHTML = `
+    <section class="st-cover wb-tcover">
+      <div class="wrap">
+        <a class="back" href="project.html?id=${p.id}">← ${p.title}</a>
+        <div class="st-kicker script grad">Results</div>
+        <h1 class="st-title">Testing &amp; Evaluation</h1>
+        <p class="intro">${T.intro}</p>
+        <nav class="wb-tnav" aria-label="Test sections">
+          <a href="#t-usability"><small>01</small>Usability test</a>
+          <a href="#t-experts"><small>02</small>Expert validation</a>
+          <a href="#t-trial"><small>03</small>Limited trial</a>
+          <a href="#t-end"><small>04</small>Conclusion</a>
+        </nav>
+      </div>
+    </section>
+
+    <section class="sec light wb" id="t-usability">
+      <div class="wrap">
+        ${head('01', 'Usability Test', T.usability.desc)}
+        <div class="wb-ut reveal">
+          ${T.usability.groups.map(([g, rows]) => `
+            <div class="wb-ut-g">
+              <h3>${g}</h3>
+              <ul>${rows.map(([c, o]) => `<li><div><b>${c}</b><span>${o}</span></div>${ok}</li>`).join('')}</ul>
+            </div>`).join('')}
+        </div>
+        <div class="wb-src reveal">${fig(T.usability.img)}</div>
+      </div>
+    </section>
+
+    <section class="sec light wb" id="t-experts">
+      <div class="wrap">
+        ${head('02', 'Expert Validation', 'Two groups of experts scored the book and the app on a scale of 1 to 5.')}
+        ${T.experts.map(e => `
+          <div class="wb-exp reveal">
+            <div class="wb-exp-side">
+              <h3>${e.title}</h3>
+              <ul class="wb-who">${e.who.map(([n, r]) => `<li><b>${n}</b><span>${r}</span></li>`).join('')}</ul>
+              <small class="wb-lbl">Result</small><p>${e.result}</p>
+              <small class="wb-lbl">Evaluation</small><ul class="wb-dots">${e.eval.map(x => `<li>${x}</li>`).join('')}</ul>
+              <div class="wb-verdict"><small>Conclusion</small><b>${e.verdict}</b></div>
+            </div>
+            <div class="wb-exp-chart">${chart(e)}</div>
+          </div>`).join('')}
+      </div>
+    </section>
+
+    <section class="sec light wb" id="t-trial">
+      <div class="wrap">
+        ${head('03', 'Limited Trial', T.trial.desc)}
+        <div class="wb-trial reveal">
+          ${fig(T.trial.img)}
+          <div class="wb-meters">${T.trial.results.map(([n, l]) => `
+            <div class="wb-meter"><div class="wb-meter-top"><b>${n}<small> / 25</small></b><span>students</span></div><div class="wb-track"><i style="--v:${n / 25}"></i></div><p>${l}</p></div>`).join('')}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec light wb" id="t-end">
+      <div class="wrap">
+        ${head('04', 'Conclusion &amp; Next Steps', '')}
+        <div class="pd-cols reveal">
+          <div><h2>Conclusion</h2><ol>${T.conclusion.map(x => `<li>${x}</li>`).join('')}</ol></div>
+          <div><h2>Next steps</h2><ol>${T.next.map(x => `<li>${x}</li>`).join('')}</ol></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap pd-next">
+      <a href="project.html?id=${p.id}"><small>← Back to project</small><h3>${p.title}</h3></a>
+      ${p.links ? `<a href="${p.links[0].href}" target="_blank" rel="noopener"><small>Read the book ↗</small><h3>Final Book PDF</h3></a>` : ''}
+    </section>
+    ${footer()}`;
+      $$('.wb-tnav a').forEach(a => a.addEventListener('click', e => { e.preventDefault(); $(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' }); }));
+    }
     const metaCols = [['Role', p.meta[0]], ['Type', p.meta[1]], ['Period', p.meta[2] || p.year], ['Category', catLabel(p.cat)]].filter(x => x[1]);
     app.innerHTML = `
     <section class="st-cover">
@@ -658,6 +823,7 @@
           <h1 class="st-title">${p.title}</h1>
           <p class="intro">${p.intro}</p>
           <div class="st-meta">${metaCols.map(([k, v]) => `<div><small>${k}</small><b>${v}</b></div>`).join('')}</div>
+          ${p.links ? `<div class="st-links">${p.links.map(l => `<a class="st-link" href="${l.href}" target="_blank" rel="noopener"><span><b>${l.label}</b><small>${l.note}</small></span><i aria-hidden="true">↗</i></a>`).join('')}</div>` : ''}
         </div>
         <div class="st-right reveal">
           <div class="st-card">${cover ? media(cover.src, cover.label, 'zoomable') : media('', 'Cover project', '', true)}</div>
@@ -667,7 +833,8 @@
     </section>
     <div id="st-body"></div>
 
-    ${p.obj ? `
+    ${p.story ? storyHTML() : ''}
+    ${!p.story && p.obj ? `
     <section class="sec light">
       ${p.stats ? `<div class="wrap st-stats reveal">${p.stats.map(([n, l]) => `<div><b data-num="${n}">${n}</b><small>${l}</small></div>`).join('')}</div>` : ''}
       <div class="wrap pd-cols">
@@ -687,8 +854,10 @@
       </div>
     </section>` : ''}
 
+    ${p.story ? `<section class="sec wb wb-assets"><div class="wrap">${chHead('Visual <span class="script">assets</span>', 'Characters, instrument illustrations in 2D and 3D, scene illustrations, and the app interface.')}</div></section>` : ''}
     ${(p.sections || []).length > 1 ? `<nav class="pd-nav" id="pdNav" aria-label="Project sections"><div class="wrap">${p.sections.map((x, k) => `<a href="#sec-${k}" data-k="${k}"><small>${String(k + 1).padStart(2, "0")}</small>${x.title}</a>`).join('')}</div></nav>` : ''}
     ${sectionsHTML}
+    ${p.outcome ? outcomeHTML() : ''}
     ${rest.length ? `
     <section class="sec light">
       <div class="wrap">

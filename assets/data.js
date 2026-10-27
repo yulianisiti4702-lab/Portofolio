@@ -432,6 +432,65 @@ const PROJECTS = [
    thumb: "assets/images/ar/cover.jpg",
    cover: { label: "Mengenal Waditra Sunda book cover", src: "assets/images/ar/cover.jpg" },
    gallery: [{ label: "Book cover", src: "assets/images/ar/cover.jpg" }],
+   links: [{ label: "Read the Book", note: "Final book · PDF", href: "https://drive.google.com/file/d/1X_7BlDkgokQchId_-iqOzlDFRzf7Foif/view" },
+           { label: "Concept Art Book", note: "Design concept · PDF", href: "https://drive.google.com/file/d/1qh7Tp8v9kywPbENHMJgE0o_pDKf3nsbv/view" }],
+   story: {
+     background: {
+       img: ["story-background", "Children playing Sundanese instruments, an illustration from the book"],
+       text: ["Indonesia is home to a wide range of cultures, and these local traditions are part of the nation's identity. Yet more than 300 Sundanese cultural traditions are now classified as “early dying” or “late dying”. With fewer young people interested in preserving them, there is no new generation of performers to carry them on.",
+              "Education is one of the most effective ways to raise a generation that will keep these traditions alive. Printed books are still the main learning media in schools, but children today spend much of their time on screens, so an interactive medium is needed to introduce culture in a way they already enjoy."],
+       facts: [["300+", "Sundanese cultural traditions classified as early or late dying"], ["71.3%", "of school-age children own a phone and use it for long hours every day (KPAI survey, 2020)"]]
+     },
+     problems: ["Learning media for traditional music are still conventional.", "Children show little interest in learning traditional Sundanese instruments.", "Children need to learn the values and roles of Waditra in their community."],
+     solution: "An interactive learning medium that combines technology with traditional Sundanese music: an illustrated book on Waditra (Sundanese instruments), grouped by the Hornbostel–Sachs classification, paired with an Augmented Reality app.",
+     goals: [["Concept", "Define the design concept of an AR-based interactive illustrated book about traditional Sundanese instruments for elementary school children."], ["Process", "Document the process of creating the book and the AR app, from research to the final print."], ["Visual", "Describe the visual language of the book and the app, from characters and illustrations to layout and interface."]],
+     research: {
+       approach: "Qualitative",
+       img: ["research-methods", "Interviews, observation, and documentation during data collection"],
+       collect: ["Interviews", "Observation", "Documentation"],
+       process: ["Data reduction", "Data display", "Drawing conclusions"]
+     },
+     method: [["Empathize", "Identify the problem through interviews, observation, and documentation."], ["Define", "Turn the findings into clear insights through data reduction, data display, and drawing conclusions."], ["Ideate", "Build the initial concept, from media planning to the creative direction of the solution."], ["Prototype", "Create every asset, build the AR app, and print a dummy book."], ["Test", "Run a usability test, expert validation with media and subject-matter experts, and a limited trial with students."]]
+   },
+   outcome: {
+     book: { title: "Printed Book", img: [["cover", "Full cover spread"], ["printed-book", "The printed book"]],
+             desc: "A full-color illustrated book that introduces 16 Waditra across four Hornbostel–Sachs categories, each with a short explanation, how it is played, and a full-page scene showing it in tradition.",
+             specs: [["Format", "A4, portrait"], ["Pages", "52"], ["Cover", "Art Paper 260 gsm"], ["Inner pages", "Art Paper 150 gsm"], ["Binding", "Saddle stitch (staples)"]] },
+     app: { title: "AR Waditra App", img: [["ar-in-action", "Scanning the Gamelan Degung page with AR Waditra"], ["app-mainmenu-mockup", "AR Waditra main menu"]],
+            desc: "A marker-based mobile app that recognizes each book page and places a 3D model of the instrument on top of it, together with audio that supports the text.",
+            specs: [["Markers", "Book pages with the AR Waditra icon"], ["3D models", "Built in Blender"], ["Audio", "Scale, repertoire sample, and narration"], ["Install", "Through a QR code in the book"], ["Built with", "Unity 3D & Vuforia"]] },
+     tests: [["Usability test", "Every feature passed", "All buttons, sliders, the AR detector, and 3D interactions worked as expected."], ["Expert validation", "Ready to use", "Subject-matter and media experts rated the book suitable, with minor revisions."], ["Limited trial", "24 of 25", "sixth graders strongly agreed that the book looks attractive."]]
+   },
+   testing: {
+     intro: "The book and the AR Waditra app were tested in three stages: a usability test of every app feature, validation by subject-matter and media experts, and a limited trial with elementary school students.",
+     usability: {
+       desc: "The usability test checked whether every feature in the AR app works as designed, and whether the flow is easy for users to understand.",
+       img: ["usability-table", "Original usability test table from the thesis defense"],
+       groups: [["Main menu", [["App info button", "Shows the app info and credits"], ["Settings button", "Opens the background music and sound effect settings"], ["Start AR button", "Opens the AR scanner"], ["Guide button", "Opens the user guide"]]],
+                ["Settings", [["Background music slider", "Adjusts the background music volume"], ["Sound effect slider", "Adjusts the sound effect volume"]]],
+                ["Start AR", [["AR detector", "Detects the marker and shows the 3D object"], ["Interaction", "Moves and rotates the 3D object with one or two fingers"], ["Scale button", "Plays the instrument's scale"], ["Music button", "Plays a repertoire sample"], ["Narration button", "Plays the narration"], ["Back button", "Returns to the main menu"]]],
+                ["Guide", [["Next button", "Moves the guide to the next page"], ["Previous button", "Moves the guide to the previous page"], ["Download marker button", "Opens the link to download the markers"], ["Back button", "Returns to the main menu"]]]]
+     },
+     experts: [
+       { title: "Subject-matter experts", who: [["Iwan Gunawan, S.Pd., M.Pd.", "Lecturer, Music Education Study Program, and karawitan practitioner"], ["Indra, S.Pd.", "Music teacher, SD Labschool UPI"]],
+         scores: [["Suitability as learning media", 5, 5], ["Content", 5, 5], ["Book visuals", 5, 5], ["Instrument visuals", 5, 5], ["Audio", 5, 5], ["Experience", 5, 5], ["Material", 4, 5], ["Use of AR", 5, 5]],
+         result: "Both validators were satisfied with the design, rating almost every aspect as highly suitable.",
+         eval: ["The content could focus on more specific points.", "The book could be developed for each school phase: Phase A (grades 1–2), Phase B (grades 3–4), and Phase C (grades 5–6)."],
+         verdict: "Ready to use, with revisions or additions." },
+       { title: "Media experts", who: [["Ginanjar Setia Mulyana, S.Pd.", "Art Director, PT. Mizan Pustaka"], ["Sucianty Nurul, S.Ds.", "Junior Art Director, PT. Mizan Pustaka"]],
+         scores: [["Illustration", 5, 4], ["Drawing style", 4, 4], ["Target readers", 5, 4], ["Color", 3, 4], ["Text", 4, 3], ["Font", 4, 4], ["Layout", 3, 4], ["Composition", 4, 4], ["Material", 4, 4], ["Dimensions", 5, 4], ["UI illustration", 4, 4], ["UI color", 3, 4], ["UI text", 4, 4], ["UI layout", 4, 2], ["Navigation", 4, 4], ["Buttons", 3, 4], ["Responsiveness", 4, 4], ["3D objects", 5, 4], ["Audio", 5, 4]],
+         result: "The book's visuals and the app's UI and UX were rated good for elementary school children, with a few points to improve.",
+         eval: ["Text in the book and the app needs more attention, both in layout and in typos.", "The drawing style could follow more current trends."],
+         verdict: "Ready to use, with revisions or additions." }
+     ],
+     trial: {
+       desc: "A short questionnaire with 17 statements and 3 short-answer questions, completed by 25 sixth-grade students at SD Labschool UPI after reading the book and using the app.",
+       img: ["trial-classroom", "Students reading the book during the limited trial at SD Labschool UPI"],
+       results: [[24, "strongly agreed that the book's visuals look attractive."], [18, "strongly agreed that reading the book broadened their knowledge of Sundanese instruments."], [18, "strongly agreed that the app's audio helped them understand the instruments."], [12, "strongly agreed that reading a book with AR is more fun."]]
+     },
+     conclusion: ["The idea started from conventional learning media that left children uninterested in Waditra, which called for an interactive medium.", "A qualitative approach and the Design Thinking method guided the whole design process.", "The final book and app received a positive response, showing that the design suits its readers."],
+     next: ["Add more interactive content to the app.", "Align the book with the school curriculum.", "Present the information in the book in more specific detail.", "Improve the visual and audio quality, ideally in collaboration with local artists and musicians."]
+   },
    sections: [
      { title: "Book Cover & Printed Book", layout: "grid-2",
        desc: "The full wraparound cover and the final printed softcover. A decorative script headline and swirling golden ornaments give the book a traditional Sundanese feel, while the teal and yellow palette keeps it bright and inviting for children.",
