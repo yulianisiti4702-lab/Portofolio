@@ -435,6 +435,8 @@ const PROJECTS = [
    links: [{ label: "Read the Book", note: "Final book · PDF", href: "https://drive.google.com/file/d/1X_7BlDkgokQchId_-iqOzlDFRzf7Foif/view" },
            { label: "Concept Art Book", note: "Design concept · PDF", href: "https://drive.google.com/file/d/1qh7Tp8v9kywPbENHMJgE0o_pDKf3nsbv/view" }],
    story: {
+     summary: "More than 300 Sundanese cultural traditions are close to disappearing, while children spend more and more of their day on phones. This project turns that habit into a way in: an illustrated book about traditional Sundanese instruments, brought to life by an AR app, and planned through qualitative research and the Design Thinking method.",
+     highlights: [["300+", "Sundanese traditions close to disappearing"], ["71.3%", "of school-age children use a phone for long hours every day"], ["5", "Design Thinking stages, from research to testing"]],
      background: {
        img: ["story-background", "Children playing Sundanese instruments, an illustration from the book"],
        text: ["Indonesia is home to a wide range of cultures, and these local traditions are part of the nation's identity. Yet more than 300 Sundanese cultural traditions are now classified as “early dying” or “late dying”. With fewer young people interested in preserving them, there is no new generation of performers to carry them on.",

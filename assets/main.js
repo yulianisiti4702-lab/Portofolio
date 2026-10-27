@@ -645,14 +645,32 @@
     const fig = ([f, l], cls = '') => `<figure class="wb-fig ${cls}">${media(IMG(f), l, 'zoomable')}<figcaption>${l}</figcaption></figure>`;
 
     if (view === 'testing' && p.testing) { renderTesting(); return; }
+    if (view === 'plan' && p.story) { renderPlan(); return; }
 
     function storyHTML() {
-      const s = p.story, b = s.background, r = s.research;
+      const s = p.story;
       return `
     <section class="sec wb wb-story">
       <div class="wrap">
         ${chHead('From <span class="script">problem</span> to plan', 'Why the book was made, and how the research and design were planned.')}
-        <div class="wb-bg">
+        <div class="wb-bg wb-sum">
+          ${fig(s.background.img, 'reveal')}
+          <div class="reveal">
+            <h3 class="wb-h">Background</h3>
+            <p>${s.summary}</p>
+            <div class="wb-facts wb-facts-3">${s.highlights.map(([n, l]) => `<div><b data-num="${n}">${n}</b><small>${l}</small></div>`).join('')}</div>
+            <div class="wb-cta"><a class="btn" href="project.html?id=${p.id}&view=plan">See the full plan →</a></div>
+          </div>
+        </div>
+        ${p.process ? `<div class="wb-cta reveal"><a class="btn" href="project.html?id=${p.id}&view=process">See the full design process →</a></div>` : ''}
+      </div>
+    </section>`;
+    }
+
+    function planBody() {
+      const s = p.story, b = s.background, r = s.research;
+      return `
+        <div class="wb-bg" id="pl-bg">
           ${fig(b.img, 'reveal')}
           <div class="reveal">
             <h3 class="wb-h">Background</h3>
@@ -660,16 +678,16 @@
             <div class="wb-facts">${b.facts.map(([n, l]) => `<div><b data-num="${n}">${n}</b><small>${l}</small></div>`).join('')}</div>
           </div>
         </div>
-        <div class="wb-ps reveal">
+        <div class="wb-ps reveal" id="pl-ps">
           <div><h3 class="wb-h">Problems</h3><ol class="wb-list">${s.problems.map(x => `<li>${x}</li>`).join('')}</ol></div>
           <div class="wb-arrow" aria-hidden="true">→</div>
           <div class="wb-sol"><h3 class="wb-h">Solution</h3><p>${s.solution}</p></div>
         </div>
-        <div class="wb-block reveal">
+        <div class="wb-block reveal" id="pl-goals">
           <h3 class="wb-h">Design goals</h3>
           <div class="wb-goals">${s.goals.map(([g, d]) => `<div><b>${g}</b><p>${d}</p></div>`).join('')}</div>
         </div>
-        <div class="wb-block reveal">
+        <div class="wb-block reveal" id="pl-method">
           <h3 class="wb-h">Research method <span class="wb-tag">${r.approach} approach</span></h3>
           <div class="wb-research">
             <div>
@@ -687,9 +705,35 @@
           <h3 class="wb-h">Design method <span class="wb-tag">Design Thinking</span></h3>
           <ol class="wb-steps">${s.method.map(([m, d]) => `<li><b>${m}</b><p>${d}</p></li>`).join('')}</ol>
         </div>
-        ${p.process ? `<div class="wb-cta reveal"><a class="btn" href="project.html?id=${p.id}&view=process">See the full design process →</a></div>` : ''}
+`;
+    }
+
+    function renderPlan() {
+      document.title = `From Problem to Plan — ${p.title} | ${PROFILE.name}`;
+      app.innerHTML = `
+    <section class="st-cover wb-tcover">
+      <div class="wrap">
+        <a class="back" href="project.html?id=${p.id}">← ${p.title}</a>
+        <div class="st-kicker script grad">Chapter 01</div>
+        <h1 class="st-title">From Problem to Plan</h1>
+        <p class="intro">Why the book was made, what problem it answers, and how the research and design were planned, based on the thesis defense.</p>
+        <nav class="wb-tnav" aria-label="Plan sections">
+          <a href="#pl-bg"><small>01</small>Background</a>
+          <a href="#pl-ps"><small>02</small>Problem &amp; solution</a>
+          <a href="#pl-goals"><small>03</small>Design goals</a>
+          <a href="#pl-method"><small>04</small>Methods</a>
+        </nav>
       </div>
-    </section>`;
+    </section>
+    <section class="sec light wb wb-plan">
+      <div class="wrap">${planBody()}</div>
+    </section>
+    <section class="wrap pd-next">
+      <a href="project.html?id=${p.id}"><small>← Back to project</small><h3>${p.title}</h3></a>
+      ${p.testing ? `<a href="project.html?id=${p.id}&view=testing"><small>Next →</small><h3>Testing &amp; Evaluation</h3></a>` : ''}
+    </section>
+    ${footer()}`;
+      $$('.wb-tnav a').forEach(a => a.addEventListener('click', e => { e.preventDefault(); $(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' }); }));
     }
 
     function outcomeHTML() {
@@ -833,7 +877,6 @@
     </section>
     <div id="st-body"></div>
 
-    ${p.story ? storyHTML() : ''}
     ${!p.story && p.obj ? `
     <section class="sec light">
       ${p.stats ? `<div class="wrap st-stats reveal">${p.stats.map(([n, l]) => `<div><b data-num="${n}">${n}</b><small>${l}</small></div>`).join('')}</div>` : ''}
@@ -854,6 +897,7 @@
       </div>
     </section>` : ''}
 
+    ${p.story ? storyHTML() : ''}
     ${p.story ? `<section class="sec wb wb-assets"><div class="wrap">${chHead('Visual <span class="script">assets</span>', 'Characters, instrument illustrations in 2D and 3D, scene illustrations, and the app interface.')}</div></section>` : ''}
     ${(p.sections || []).length > 1 ? `<nav class="pd-nav" id="pdNav" aria-label="Project sections"><div class="wrap">${p.sections.map((x, k) => `<a href="#sec-${k}" data-k="${k}"><small>${String(k + 1).padStart(2, "0")}</small>${x.title}</a>`).join('')}</div></nav>` : ''}
     ${sectionsHTML}
