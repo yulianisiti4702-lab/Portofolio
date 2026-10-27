@@ -622,7 +622,7 @@
     };
 
     // halaman utama project dengan story: hanya foto bertanda ★ (item ke-3 = true); halaman view=assets: semua foto
-    const mainSecs = p.story ? (p.sections || []).map(s => ({ ...s, images: s.images.filter(x => x[2]) })).filter(s => s.images.length) : (p.sections || []);
+    const mainSecs = p.assets ? [] : p.story ? (p.sections || []).map(s => ({ ...s, images: s.images.filter(x => x[2]) })).filter(s => s.images.length) : (p.sections || []);
     const navHTML = list => list.length > 1 ? `<nav class="pd-nav" id="pdNav" aria-label="Project sections"><div class="wrap">${list.map((x, k) => `<a href="#sec-${k}" data-k="${k}"><small>${String(k + 1).padStart(2, "0")}</small>${x.title}</a>`).join('')}</div></nav>` : '';
     const secHTML = list => list.map((s, k) => `
       <section class="sec light pd-section" id="sec-${k}">
@@ -689,6 +689,28 @@
           </div>
         </div>
         ${p.process ? `<div class="wb-cta reveal"><a class="btn" href="project.html?id=${p.id}&view=process">See the full design process →</a></div>` : ''}
+      </div>
+    </section>`;
+    }
+
+    function assetsHTML() {
+      const a = p.assets, all = p.sections || [], n = all.reduce((t, s) => t + s.images.length, 0);
+      const btn = `<a class="btn" href="project.html?id=${p.id}&view=assets">See all visual assets →</a>`;
+      const head = chHead('Visual <span class="script">assets</span>', 'Characters, instrument illustrations in 2D and 3D, scene illustrations, and the app interface.');
+      if (!a) return `<section class="sec wb wb-assets"><div class="wrap">${head}<div class="wb-cta wb-cta-l reveal">${btn}<span>${n} pieces · ${all.length} categories</span></div></div></section>`;
+      return `
+    <section class="sec wb wb-story wb-assets-sum">
+      <div class="wrap">
+        ${head}
+        <div class="wb-bg wb-sum">
+          ${fig(a.img, 'reveal')}
+          <div class="reveal">
+            <h3 class="wb-h">What was made</h3>
+            <p>${a.summary}</p>
+            <div class="wb-facts wb-facts-3">${a.highlights.map(([k, l]) => `<div><b data-num="${k}">${k}</b><small>${l}</small></div>`).join('')}</div>
+            <div class="wb-cta wb-cta-l">${btn}<span>${n} pieces · ${all.length} categories</span></div>
+          </div>
+        </div>
       </div>
     </section>`;
     }
@@ -924,7 +946,7 @@
     </section>` : ''}
 
     ${p.story ? storyHTML() : ''}
-    ${p.story ? `<section class="sec wb wb-assets"><div class="wrap">${chHead('Visual <span class="script">assets</span>', 'Characters, instrument illustrations in 2D and 3D, scene illustrations, and the app interface.')}<div class="wb-cta wb-cta-l reveal"><a class="btn" href="project.html?id=${p.id}&view=assets">See all visual assets →</a><span>${(p.sections || []).reduce((a, s) => a + s.images.length, 0)} pieces · ${(p.sections || []).length} categories</span></div></div></section>` : ''}
+    ${p.story ? assetsHTML() : ''}
     ${navHTML(mainSecs)}
     ${sectionsHTML}
     ${p.outcome ? outcomeHTML() : ''}

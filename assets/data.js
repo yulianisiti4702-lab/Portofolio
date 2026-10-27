@@ -493,6 +493,12 @@ const PROJECTS = [
      conclusion: ["The idea started from conventional learning media that left children uninterested in Waditra, which called for an interactive medium.", "A qualitative approach and the Design Thinking method guided the whole design process.", "The final book and app received a positive response, showing that the design suits its readers."],
      next: ["Add more interactive content to the app.", "Align the book with the school curriculum.", "Present the information in the book in more specific detail.", "Improve the visual and audio quality, ideally in collaboration with local artists and musicians."]
    },
+   // ringkasan Chapter 02 di halaman utama (detail fotonya ada di halaman "See all visual assets")
+   assets: {
+     summary: "Every visual in the project was made from scratch: the characters, a detailed 2D illustration and 3D model for each instrument, full-page scenes of the instruments in their cultural setting, and an app interface that shares the book's ornaments and palette.",
+     img: ["assets-hero", "Angklung ensemble, a scene illustration from the book"],
+     highlights: [["16", "instrument illustrations, each one also an AR marker"], ["11", "full-page scenes of instruments in their tradition"], ["15", "app screens designed for AR Waditra"]]
+   },
    // ★ ketiga = true → tampil di halaman utama; semua foto tampil di halaman "See all visual assets"
    sections: [
      { title: "Character Design", layout: "fan",
