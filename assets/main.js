@@ -621,7 +621,10 @@
       </div>`;
     };
 
-    const sectionsHTML = (p.sections || []).map((s, k) => `
+    // halaman utama project dengan story: hanya foto bertanda ★ (item ke-3 = true); halaman view=assets: semua foto
+    const mainSecs = p.story ? (p.sections || []).map(s => ({ ...s, images: s.images.filter(x => x[2]) })).filter(s => s.images.length) : (p.sections || []);
+    const navHTML = list => list.length > 1 ? `<nav class="pd-nav" id="pdNav" aria-label="Project sections"><div class="wrap">${list.map((x, k) => `<a href="#sec-${k}" data-k="${k}"><small>${String(k + 1).padStart(2, "0")}</small>${x.title}</a>`).join('')}</div></nav>` : '';
+    const secHTML = list => list.map((s, k) => `
       <section class="sec light pd-section" id="sec-${k}">
         <div class="wrap">
           <div class="pd-sec-head reveal">
@@ -636,6 +639,7 @@
             `<figure class="reveal-img">${media((p.imgBase || '') + f + (f.includes('.') ? '' : '.jpg'), l, 'zoomable')}<figcaption>${l}</figcaption></figure>`).join('')}</div>`}
         </div>
       </section>`).join('');
+    const sectionsHTML = secHTML(mainSecs);
 
     const nn = String(i + 1).padStart(2, '0');
     const IMG = f => (p.imgBase || '') + f + (f.includes('.') ? '' : '.jpg');
@@ -646,6 +650,28 @@
 
     if (view === 'testing' && p.testing) { renderTesting(); return; }
     if (view === 'plan' && p.story) { renderPlan(); return; }
+    if (view === 'assets' && p.story) { renderAssets(); return; }
+
+    function renderAssets() {
+      document.title = `Visual Assets — ${p.title} | ${PROFILE.name}`;
+      const all = p.sections || [], n = all.reduce((a, s) => a + s.images.length, 0);
+      app.innerHTML = `
+    <section class="st-cover wb-tcover">
+      <div class="wrap">
+        <a class="back" href="project.html?id=${p.id}">← ${p.title}</a>
+        <div class="st-kicker script grad">Chapter 02</div>
+        <h1 class="st-title">Visual Assets</h1>
+        <p class="intro">Every asset made for the book and the AR app: ${n} pieces across ${all.length} categories, from characters and instrument illustrations to the app interface and exhibition posters.</p>
+      </div>
+    </section>
+    ${navHTML(all)}
+    ${secHTML(all)}
+    <section class="wrap pd-next">
+      <a href="project.html?id=${p.id}"><small>← Back to project</small><h3>${p.title}</h3></a>
+      ${p.testing ? `<a href="project.html?id=${p.id}&view=testing"><small>Next →</small><h3>Testing &amp; Evaluation</h3></a>` : ''}
+    </section>
+    ${footer()}`;
+    }
 
     function storyHTML() {
       const s = p.story;
@@ -898,8 +924,8 @@
     </section>` : ''}
 
     ${p.story ? storyHTML() : ''}
-    ${p.story ? `<section class="sec wb wb-assets"><div class="wrap">${chHead('Visual <span class="script">assets</span>', 'Characters, instrument illustrations in 2D and 3D, scene illustrations, and the app interface.')}</div></section>` : ''}
-    ${(p.sections || []).length > 1 ? `<nav class="pd-nav" id="pdNav" aria-label="Project sections"><div class="wrap">${p.sections.map((x, k) => `<a href="#sec-${k}" data-k="${k}"><small>${String(k + 1).padStart(2, "0")}</small>${x.title}</a>`).join('')}</div></nav>` : ''}
+    ${p.story ? `<section class="sec wb wb-assets"><div class="wrap">${chHead('Visual <span class="script">assets</span>', 'Characters, instrument illustrations in 2D and 3D, scene illustrations, and the app interface.')}<div class="wb-cta wb-cta-l reveal"><a class="btn" href="project.html?id=${p.id}&view=assets">See all visual assets →</a><span>${(p.sections || []).reduce((a, s) => a + s.images.length, 0)} pieces · ${(p.sections || []).length} categories</span></div></div></section>` : ''}
+    ${navHTML(mainSecs)}
     ${sectionsHTML}
     ${p.outcome ? outcomeHTML() : ''}
     ${rest.length ? `

@@ -1108,3 +1108,8 @@ html[data-theme="light"]{--wb-a:#9A5A17;--wb-b:#2A7A7B;--wb-soft:rgba(154,90,23,
 .wb-plan [id^="pl-"]{scroll-margin-top:90px}
 .wb-plan .wb-bg+.wb-ps{margin-top:110px}
 @media (max-width:640px){.wb-facts-3{grid-template-columns:1fr}}
+
+/* Chapter 02 — tombol ke halaman semua aset */
+.wb-cta.wb-cta-l{margin-top:34px;align-items:center;gap:18px;flex-wrap:wrap}
+.wb-cta-l span{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gray)}
+.pd-section{overflow-x:clip}
